@@ -1,25 +1,173 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Crypta 032</title>
   <style>
     body {
       font-family: system-ui, sans-serif;
       background: #0d0d0d;
-      color: #fff;
+      color: #f0f0f0;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      text-align: center;
       height: 100vh;
       margin: 0;
     }
+
     h1 {
       font-size: 2rem;
       margin-bottom: 1rem;
+      color: #00ffee;
     }
+
+    p {
+      max-width: 500px;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+
+    input {
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 16px;
+      width: 200px;
+      text-align: center;
+    }
+
+    button {
+      margin-left: 8px;
+      padding: 10px 16px;
+      background: #00ffee;
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #00c9c9;
+    }
+
     a {
-      color: #00ffcc;
+      color: #00ffee;
       text-decoration: none;
+      border: 2px solid #00ffee;
+      padding: 10px 20px;
+      border-radius: 8px;
+      transition: 0.2s;
+    }
+
+    a:hover {
+      background: #00ffee;
+      color: #000;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .msg {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #ff8080;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script>
+    // === CONFIGURAÇÃO DAS FASES ===
+    const fases = {
+      inicio: {
+        titulo: "Crypta 032",
+        texto: "Bem-vindo(a) ao enigma. Clique abaixo para começar.",
+        botao: "Começar Enigma",
+        proxima: "fase1"
+      },
+      fase1: {
+        titulo: "Fase 1",
+        texto: "Resolva o primeiro desafio. Dica: a resposta é 'chave1'.",
+        resposta: "chave1",
+        proxima: "fase2"
+      },
+      fase2: {
+        titulo: "Fase 2",
+        texto: "Segunda fase. Dica: a resposta é 'segredo'.",
+        resposta: "segredo",
+        proxima: "final"
+      },
+      final: {
+        titulo: "Parabéns!",
+        texto: "Você chegou ao final do exemplo do Crypta 032. Agora é só editar o código e criar seus próprios enigmas!",
+        botao: "Voltar ao início",
+        proxima: "inicio"
+      }
+    };
+
+    // === FUNÇÃO PARA EXIBIR CADA FASE ===
+    function mostrarFase(nome) {
+      const app = document.getElementById("app");
+      app.innerHTML = "";
+
+      const fase = fases[nome] || fases.inicio;
+
+      const h1 = document.createElement("h1");
+      h1.textContent = fase.titulo;
+
+      const p = document.createElement("p");
+      p.textContent = fase.texto;
+
+      app.appendChild(h1);
+      app.appendChild(p);
+
+      // Fases com botão direto (ex: início e final)
+      if (fase.botao) {
+        const a = document.createElement("a");
+        a.href = `#${fase.proxima}`;
+        a.textContent = fase.botao;
+        app.appendChild(a);
+        return;
+      }
+
+      // Fases com campo de resposta
+      const input = document.createElement("input");
+      input.placeholder = "Digite a resposta";
+
+      const btn = document.createElement("button");
+      btn.textContent = "Enviar";
+
+      const msg = document.createElement("div");
+      msg.className = "msg";
+
+      btn.onclick = () => {
+        const valor = input.value.trim().toLowerCase();
+        if (valor === fase.resposta.toLowerCase()) {
+          location.hash = `#${fase.proxima}`;
+        } else {
+          msg.textContent = "Resposta incorreta. Tente novamente.";
+        }
+      };
+
+      app.appendChild(input);
+      app.appendChild(btn);
+      app.appendChild(msg);
+    }
+
+    // === MONITORAR MUDANÇAS NO LINK ===
+    function atualizar() {
+      const faseAtual = location.hash.replace("#", "").toLowerCase() || "inicio";
+      mostrarFase(faseAtual);
+    }
+
+    window.addEventListener("hashchange", atualizar);
+    atualizar();
+  </script>
+</body>
+</html>
