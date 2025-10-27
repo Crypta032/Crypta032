@@ -12,16 +12,62 @@
     }
 
     body {
-      background-color: black;
-      color: white;
+      background-color: #000;
       height: 100vh;
+      overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
+      position: relative;
       font-family: 'Courier New', monospace;
     }
 
+    /* 🌲 Camada de floresta escura ao redor */
+    .floresta {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, rgba(0,0,0,0) 40%, rgba(0,0,0,0.8) 100%),
+                  url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1920&q=80');
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.4) blur(1px);
+      z-index: 1;
+    }
+
+    /* 💀 Imagem da caverna */
+    #entrada {
+      position: relative;
+      z-index: 2;
+      max-width: 70%;
+      height: auto;
+      cursor: pointer;
+      transition: transform 1.5s ease, filter 1.5s ease;
+      border-radius: 12px;
+      box-shadow: 0 0 80px rgba(0, 0, 0, 0.9);
+      filter: brightness(1) contrast(1.15);
+    }
+
+    #entrada:hover {
+      transform: scale(1.05);
+      filter: brightness(1.3) contrast(1.2);
+    }
+
+    /* 🌫️ Efeito de neblina */
+    .neblina {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 70%, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.8) 100%);
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    /* ✨ Fade na transição */
     #fade {
       position: fixed;
       top: 0;
@@ -35,41 +81,39 @@
       z-index: 10;
     }
 
-    img {
-      max-width: 80%;
-      height: auto;
-      cursor: pointer;
-      transition: transform 0.5s ease, filter 0.5s ease;
-      border-radius: 12px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.8);
-    }
-
-    img:hover {
-      transform: scale(1.03);
-      filter: brightness(1.2);
-    }
-
+    /* Título */
     h1 {
       position: absolute;
-      top: 40px;
-      font-size: 2.5em;
-      text-shadow: 0 0 10px #7f00ff, 0 0 20px #00fff2;
+      top: 30px;
+      color: #fff;
+      font-size: 2.3em;
       letter-spacing: 3px;
+      text-shadow: 0 0 10px #7f00ff, 0 0 20px #00fff2;
+      z-index: 5;
     }
   </style>
 </head>
 <body>
+  <div class="floresta"></div>
   <h1>Crypta 032</h1>
-
-  <img src="assets.png" alt="Entrada da caverna" id="portal" />
-
+  <img id="entrada" src="assets.png" alt="Entrada da Caverna" />
+  <div class="neblina"></div>
   <div id="fade"></div>
 
-  <script>
-    const portal = document.getElementById('portal');
-    const fade = document.getElementById('fade');
+  <!-- 🌲 Som ambiente (vento/floresta) -->
+  <audio id="ambiente" loop autoplay>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_bf8ec9b6b7.mp3?filename=forest-wind-ambient-10449.mp3" type="audio/mpeg">
+  </audio>
 
-    portal.addEventListener('click', () => {
+  <script>
+    const entrada = document.getElementById('entrada');
+    const fade = document.getElementById('fade');
+    const audio = document.getElementById('ambiente');
+
+    // garante que o áudio começa suave
+    audio.volume = 0.25;
+
+    entrada.addEventListener('click', () => {
       fade.style.opacity = 1;
       setTimeout(() => {
         window.location.href = 'fase1.html';
