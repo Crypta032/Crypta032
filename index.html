@@ -5,77 +5,103 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Crypta 032</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap');
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: system-ui, sans-serif;
-      background: #0d0d0d;
-      color: #f0f0f0;
+      margin: 0;
+      background: radial-gradient(circle at center, #0a0a0a 0%, #000 100%);
+      color: #00ffee;
+      font-family: 'Orbitron', sans-serif;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      text-align: center;
       height: 100vh;
-      margin: 0;
+      overflow: hidden;
+    }
+
+    #app {
+      text-align: center;
+      width: 90%;
+      max-width: 800px;
     }
 
     h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      color: #00ffee;
+      font-size: 2.2rem;
+      margin: 0.5rem 0;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px #00ffee;
     }
 
     p {
-      max-width: 500px;
+      color: #ccc;
+      font-size: 1rem;
       line-height: 1.5;
-      margin-bottom: 1.5rem;
     }
 
     input {
-      padding: 10px;
-      border-radius: 6px;
-      border: none;
-      font-size: 16px;
+      padding: 8px 10px;
+      border: 2px solid #00ffee;
+      border-radius: 5px;
+      background: transparent;
+      color: #00ffee;
+      font-size: 1rem;
+      outline: none;
       width: 200px;
       text-align: center;
     }
 
     button {
-      margin-left: 8px;
-      padding: 10px 16px;
+      margin-left: 6px;
+      padding: 8px 16px;
       background: #00ffee;
       color: #000;
       border: none;
-      border-radius: 6px;
+      border-radius: 5px;
       cursor: pointer;
       font-weight: bold;
+      font-family: 'Orbitron', sans-serif;
     }
 
     button:hover {
       background: #00c9c9;
     }
 
-    a {
-      color: #00ffee;
-      text-decoration: none;
-      border: 2px solid #00ffee;
-      padding: 10px 20px;
-      border-radius: 8px;
-      transition: 0.2s;
+    img.clickable {
+      width: 300px;
+      max-width: 90%;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 255, 238, 0.4);
+      cursor: pointer;
+      transition: 0.3s;
     }
 
-    a:hover {
-      background: #00ffee;
-      color: #000;
-    }
-
-    .hidden {
-      display: none;
+    img.clickable:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 40px rgba(0, 255, 238, 0.7);
     }
 
     .msg {
-      margin-top: 1rem;
+      margin-top: 0.5rem;
       font-size: 0.9rem;
       color: #ff8080;
+    }
+
+    .top-bar {
+      position: absolute;
+      top: 15px;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .enigma-area {
+      margin-top: 80px;
     }
   </style>
 </head>
@@ -86,14 +112,12 @@
     // === CONFIGURAÇÃO DAS FASES ===
     const fases = {
       inicio: {
-        titulo: "Crypta 032",
-        texto: "Bem-vindo(a) ao enigma. Clique abaixo para começar.",
-        botao: "Começar Enigma",
-        proxima: "fase1"
+        tipo: "inicio",
+        imagem: "assets.png", // nome do seu arquivo
       },
       fase1: {
         titulo: "Fase 1",
-        texto: "Resolva o primeiro desafio. Dica: a resposta é 'chave1'.",
+        texto: "Resolva o primeiro enigma. Dica: a resposta é 'chave1'.",
         resposta: "chave1",
         proxima: "fase2"
       },
@@ -118,25 +142,26 @@
 
       const fase = fases[nome] || fases.inicio;
 
-      const h1 = document.createElement("h1");
-      h1.textContent = fase.titulo;
+      // === Tela inicial ===
+      if (fase.tipo === "inicio") {
+        const img = document.createElement("img");
+        img.src = fase.imagem;
+        img.className = "clickable";
+        img.alt = "Iniciar enigma";
+        img.onclick = () => (location.hash = "#fase1");
 
-      const p = document.createElement("p");
-      p.textContent = fase.texto;
+        const h1 = document.createElement("h1");
+        h1.textContent = "Crypta 032";
 
-      app.appendChild(h1);
-      app.appendChild(p);
-
-      // Fases com botão direto (ex: início e final)
-      if (fase.botao) {
-        const a = document.createElement("a");
-        a.href = `#${fase.proxima}`;
-        a.textContent = fase.botao;
-        app.appendChild(a);
+        app.appendChild(h1);
+        app.appendChild(img);
         return;
       }
 
-      // Fases com campo de resposta
+      // === Fases com enigmas ===
+      const topBar = document.createElement("div");
+      topBar.className = "top-bar";
+
       const input = document.createElement("input");
       input.placeholder = "Digite a resposta";
 
@@ -146,18 +171,32 @@
       const msg = document.createElement("div");
       msg.className = "msg";
 
+      topBar.appendChild(input);
+      topBar.appendChild(btn);
+      topBar.appendChild(msg);
+      app.appendChild(topBar);
+
+      const area = document.createElement("div");
+      area.className = "enigma-area";
+
+      const h1 = document.createElement("h1");
+      h1.textContent = fase.titulo;
+
+      const p = document.createElement("p");
+      p.textContent = fase.texto;
+
+      area.appendChild(h1);
+      area.appendChild(p);
+      app.appendChild(area);
+
       btn.onclick = () => {
         const valor = input.value.trim().toLowerCase();
         if (valor === fase.resposta.toLowerCase()) {
           location.hash = `#${fase.proxima}`;
         } else {
-          msg.textContent = "Resposta incorreta. Tente novamente.";
+          msg.textContent = "Resposta incorreta.";
         }
       };
-
-      app.appendChild(input);
-      app.appendChild(btn);
-      app.appendChild(msg);
     }
 
     // === MONITORAR MUDANÇAS NO LINK ===
