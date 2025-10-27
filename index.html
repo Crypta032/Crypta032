@@ -1,180 +1,25 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Crypta 032 — Inicial</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crypta 032</title>
   <style>
-    :root{font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
-    html,body{height:100%;margin:0}
-    .wrapper{min-height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:32px;box-sizing:border-box}
-    .clickable{cursor:pointer;display:inline-block}
-    img.center-img{max-width:60vmin;max-height:60vmin;width:auto;height:auto;display:block}
-    .card{max-width:700px;width:100%;padding:20px;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.12);background:linear-gradient(180deg,rgba(255,255,255,.95),#fff)}
-    .title{font-size:22px;margin:0 0 12px}
-    .hint{color:#444;margin:0 0 16px}
-    .input-row{display:flex;gap:8px}
-    input[type=text]{flex:1;padding:10px;border-radius:8px;border:1px solid #ccc;font-size:16px}
-    button{padding:10px 14px;border-radius:8px;border:none;font-size:16px;cursor:pointer}
-    .small{font-size:13px;color:#666;margin-top:10px}
-    .hidden{display:none}
-  </style>
-</head>
-<body>
-  <div class="wrapper" id="app">
-    <!-- Conteúdo será injetado pelo script abaixo -->
-  </div>
-
-  <script>
-    // --- CONFIGURE AQUI AS FASES ---
-    // cada chave é o *último segmento* do caminho (por exemplo: /fase1, /abc123)
-    // coloque em minúsculas as respostas para facilitar a comparação
-    const stages = {
-      // landing: quando pathSegment === '' mostramos a imagem clicável
-      'fase1': {
-        title: 'Fase 1 — Um começo simples',
-        hint: 'Clique na imagem para começar. Resposta esperada: uma palavra curta.',
-        prompt: 'Insira a senha da fase 1',
-        answer: 'chave1', // resposta correta (sem acentos, minúscula)
-        next: 'fase2' // caminho a seguir ao acertar
-      },
-      'fase2': {
-        title: 'Fase 2 — Segundo enigma',
-        hint: 'Agora você está na fase 2. Resposta: palavra secreta.',
-        prompt: 'Senha da fase 2',
-        answer: 'segredo',
-        next: 'final'
-      },
-      'final': {
-        title: 'Parabéns!',
-        hint: 'Você chegou ao final do exemplo. Personalize esta fase no arquivo index.html',
-        prompt: '',
-        answer: '',
-        next: ''
-      }
-    };
-
-    // --- helpers ---
-    const app = document.getElementById('app');
-
-    function lastPathSegment(){
-      const parts = location.pathname.split('/').filter(Boolean);
-      return parts.length ? parts.pop() : '';
+    body {
+      font-family: system-ui, sans-serif;
+      background: #0d0d0d;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
     }
-
-    function buildLanding(){
-      // Exibe a imagem central clicável. Substitua assets/crypta.png pelo arquivo que quiser.
-      const container = document.createElement('div');
-      container.className = 'card';
-
-      const t = document.createElement('h1'); t.className='title'; t.textContent='Crypta 032';
-      const p = document.createElement('p'); p.className='hint'; p.textContent='Clique na imagem para iniciar o enigma.';
-
-      const link = document.createElement('a');
-      link.className = 'clickable';
-      link.href = './fase1'; // ao clicar, vai para /fase1 (mude se quiser outro comportamento)
-      link.title = 'Iniciar';
-
-      const img = document.createElement('img');
-      img.className = 'center-img';
-      img.alt = 'Crypta 032';
-      // Substitua o caminho abaixo pelo caminho da imagem no repositório (ex: assets/crypta.png)
-      img.src = 'assets/crypta.png';
-
-      link.appendChild(img);
-      container.appendChild(t);
-      container.appendChild(p);
-      container.appendChild(link);
-      return container;
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
     }
-
-    function buildStage(key){
-      const s = stages[key];
-      if(!s) return buildNotFound();
-
-      const container = document.createElement('div');
-      container.className = 'card';
-
-      const t = document.createElement('h2'); t.className='title'; t.textContent = s.title;
-      const p = document.createElement('p'); p.className='hint'; p.textContent = s.hint;
-
-      container.appendChild(t);
-      container.appendChild(p);
-
-      if(s.prompt){
-        const row = document.createElement('div'); row.className='input-row';
-        const input = document.createElement('input'); input.type='text'; input.placeholder = s.prompt;
-        const btn = document.createElement('button'); btn.textContent = 'Enviar';
-
-        const msg = document.createElement('div'); msg.className='small';
-
-        btn.addEventListener('click', ()=>{
-          const val = (input.value||'').trim().toLowerCase();
-          if(!val){ msg.textContent = 'Digite algo antes de enviar.'; return; }
-          if(s.answer && val === s.answer.toLowerCase()){
-            // acerto — vai para a próxima fase (se definida)
-            if(s.next){
-              navigateToNext(s.next);
-            } else {
-              msg.textContent = 'Resposta correta. Mas não há próxima fase configurada.';
-            }
-          } else {
-            msg.textContent = 'Resposta incorreta. Tente novamente.';
-          }
-        });
-
-        row.appendChild(input);
-        row.appendChild(btn);
-        container.appendChild(row);
-        container.appendChild(msg);
-      }
-
-      return container;
-    }
-
-    function buildNotFound(){
-      const container = document.createElement('div');
-      container.className = 'card';
-      const t = document.createElement('h2'); t.className='title'; t.textContent='404 — Fase não encontrada';
-      const p = document.createElement('p'); p.className='hint'; p.textContent='O segmento do link não corresponde a nenhuma fase configurada.';
-      const a = document.createElement('a'); a.href = './'; a.textContent = 'Voltar ao início';
-      container.appendChild(t); container.appendChild(p); container.appendChild(a);
-      return container;
-    }
-
-    function navigateToNext(nextKey){
-      // Construímos a URL trocando apenas o último segmento pelo nextKey
-      // Isso funciona bem em GitHub Pages (mesmo se o repositório tem prefixo no caminho)
-      const parts = location.pathname.split('/');
-      // remove qualquer segmento vazio no final
-      if(parts[parts.length-1] === '') parts.pop();
-      // se estamos na raiz (apenas "/"), usamos base '/'
-      if(parts.length === 1 && parts[0] === ''){
-        // raiz
-        location.href = location.origin + '/' + nextKey;
-        return;
-      }
-      // substitui último segmento por nextKey (ou adiciona se vazio)
-      parts[parts.length-1] = nextKey;
-      const base = parts.join('/');
-      location.href = location.origin + base;
-    }
-
-    // --- renderização principal ---
-    (function main(){
-      const seg = lastPathSegment();
-      if(!seg){
-        app.appendChild(buildLanding());
-        return;
-      }
-      // se existir uma fase configurada com esse segmento
-      if(stages[seg]){
-        app.appendChild(buildStage(seg));
-        return;
-      }
-      // se não existir: 404
-      app.appendChild(buildNotFound());
-    })();
-  </script>
-</body>
-</html>
+    a {
+      color: #00ffcc;
+      text-decoration: none;
