@@ -1,98 +1,58 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Crypta 032</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      background-color: #000;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      font-family: 'Cinzel', serif;
-      color: #ddd;
-      position: relative;
-    }
-
-    /* Efeito de iluminação sutil ao redor da imagem */
-    .brilho {
-      position: absolute;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(0,0,0,1) 70%);
-      border-radius: 50%;
-      z-index: 1;
-      animation: pulsar 4s infinite alternate ease-in-out;
-    }
-
-    @keyframes pulsar {
-      from { opacity: 0.7; transform: scale(1); }
-      to { opacity: 1; transform: scale(1.05); }
-    }
-
-    .entrada {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .entrada img {
-      width: 340px;
-      max-width: 80%;
-      cursor: pointer;
-      filter: brightness(0.7) contrast(1.1);
-      transition: all 0.3s ease;
-    }
-
-    .entrada img:hover {
-      filter: brightness(1);
-      transform: scale(1.05);
-    }
-
-    h1 {
-      font-size: 2.5em;
-      text-shadow: 0 0 20px #000;
-      margin-bottom: 30px;
-      letter-spacing: 2px;
-      color: #aaa;
-      animation: fadeTitle 3s infinite alternate;
-    }
-
-    @keyframes fadeTitle {
-      from { opacity: 1; }
-      to { opacity: 0.5; }
-    }
-
-    audio { display: none; }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Crypta 032</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background: url('floresta.jpg') center center / cover no-repeat fixed;
+    height:100vh; display:flex; align-items:center; justify-content:center;
+    font-family: 'Cinzel', serif; color:#ddd; position:relative; overflow:hidden;
+  }
+  .overlay{position:absolute;inset:0;background:rgba(0,0,0,0.75);z-index:1}
+  .entrada{position:relative;z-index:2;text-align:center;display:flex;flex-direction:column;align-items:center}
+  .entrada img{width:320px;cursor:pointer;filter:brightness(0.7);transition:all .25s}
+  .entrada img:hover{filter:brightness(0.95);transform:scale(1.03)}
+  h1{font-size:2.6rem;margin-bottom:18px;color:#ccc;text-shadow:0 0 12px #000}
+  audio{display:none}
+</style>
 </head>
 <body>
-  <div class="brilho"></div>
-
+  <div class="overlay"></div>
   <div class="entrada">
     <h1>Crypta 032</h1>
-    <img src="assets.png" alt="Entrada da Caverna" onclick="entrar()">
+    <img src="assets.png" alt="Entrada da Caverna" id="portal">
   </div>
 
-  <audio autoplay loop>
-    <source src="floresta.mp3" type="audio/mpeg">
+  <!-- música ambiente (não autoplay aqui) -->
+  <audio id="musica" loop>
+    <source src="misterio.mp3" type="audio/mpeg">
   </audio>
 
-  <script>
-    function entrar() {
-      document.body.style.transition = "opacity 2s ease";
-      document.body.style.opacity = 0;
-      setTimeout(() => window.location.href = 'fase1.html', 2000);
+  <audio id="acerto">
+    <source src="acerto.mp3" type="audio/mpeg">
+  </audio>
+
+<script>
+  // Ao clicar no portal: inicia música (user gesture), toca fade e redireciona
+  const portal = document.getElementById('portal');
+  const musica = document.getElementById('musica');
+
+  portal.addEventListener('click', async () => {
+    try {
+      // tenta tocar a música — como clicou, não deve ser bloqueado
+      await musica.play();
+    } catch(e){
+      // se falhar, ignora (não trava a navegação)
+      console.warn('play falhou:', e);
     }
-  </script>
+    // fade visual simples
+    document.body.style.transition = 'opacity 1.4s ease';
+    document.body.style.opacity = 0;
+    setTimeout(()=> location.href = 'fase1.html', 1400);
+  });
+</script>
 </body>
 </html>
