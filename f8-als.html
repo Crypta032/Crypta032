@@ -21,27 +21,22 @@
   }
   h1{
     font-size:1.1rem;
-    margin-bottom:40px;
-    line-height:1.5;
+    margin-bottom:50px;
+    line-height:1.6;
     color:#ccc;
     max-width:800px;
   }
-  .imagens{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:40px;
-    margin-bottom:30px;
-  }
-  .imagens img{
-    width:180px;
+  .imagem{
+    width:250px;
     height:auto;
+    margin:15px;
     border-radius:10px;
-    opacity:0.85;
-    transition:opacity 0.3s ease;
+    box-shadow:0 0 20px rgba(255,255,255,0.1);
+    transition:transform 0.3s ease, box-shadow 0.3s ease;
   }
-  .imagens img:hover{
-    opacity:1;
+  .imagem:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 30px rgba(255,255,255,0.25);
   }
   #resposta{
     background:none;
@@ -68,13 +63,14 @@
 </head>
 <body>
 
-  <h1>O som do gelo rachando ainda ecoa em sua mente...  
-  Agora, duas imagens aparecem diante de você,  
-  como se a própria caverna o desafiasse a entender algo mais profundo.</h1>
+  <h1>
+    O ar está mais quente agora. O gelo derrete aos poucos, e gotas deslizam pelas paredes.  
+    Duas imagens se projetam diante de você, como lembranças distorcidas do tempo.
+  </h1>
 
-  <div class="imagens">
-    <img src="imagem1.png" alt="imagem misteriosa 1">
-    <img src="imagem2.png" alt="imagem misteriosa 2">
+  <div>
+    <img src="imagem1.png" alt="Imagem misteriosa 1" class="imagem">
+    <img src="imagem2.png" alt="Imagem misteriosa 2" class="imagem">
   </div>
 
   <input type="text" id="resposta" autocomplete="off" placeholder="" />
@@ -113,7 +109,7 @@
 
       if (resp === "37") {
         msg.style.color = "#0f0";
-        msg.textContent = "As imagens se derretem... e uma luz azul começa a brilhar no chão.";
+        msg.textContent = "A água corre livre... e você sente o caminho se abrir mais uma vez.";
         acerto.play();
         setTimeout(() => { window.location.href = "fase9.html"; }, 1800);
       } else if (tentativas >= 3) {
