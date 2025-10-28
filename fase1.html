@@ -8,7 +8,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      background: #000;
+      background-color: #000;
       color: #bdbdbd;
       font-family: 'Courier New', monospace;
       height: 100vh;
@@ -20,22 +20,18 @@
       animation: fadeIn 2s ease-in;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
     h1 {
       font-size: 2em;
       letter-spacing: 2px;
-      text-shadow: 0 0 20px #111;
+      text-shadow: 0 0 10px #111;
       animation: flicker 3s infinite alternate;
     }
 
     @keyframes flicker {
-      0% { opacity: 1; }
-      50% { opacity: 0.8; }
-      100% { opacity: 1; }
+      0%,100% { opacity: 1; }
+      50% { opacity: 0.85; }
     }
 
     input {
@@ -53,7 +49,7 @@
     #voz {
       margin-top: 15px;
       font-size: 0.9em;
-      color: #777;
+      color: #666;
       opacity: 0;
       transition: opacity 0.5s;
     }
