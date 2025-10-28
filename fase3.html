@@ -19,25 +19,19 @@
       text-align: center;
     }
 
-    .narrativa {
-      font-size: 1rem;
-      color: #777;
-      margin-bottom: 60px;
-      text-shadow: 0 0 6px #000;
-      max-width: 80%;
-    }
-
     h2 {
-      font-size: 1.3rem;
-      margin-bottom: 60px;
+      font-size: 1.2rem;
+      margin-bottom: 50px;
       color: #aaa;
       text-shadow: 0 0 8px #000;
+      max-width: 80%;
+      line-height: 1.4rem;
     }
 
     .palavras {
       font-size: 2rem;
       line-height: 2rem;
-      margin-bottom: 50px;
+      margin-bottom: 40px;
       letter-spacing: 2px;
       color: #ccc;
     }
@@ -50,7 +44,7 @@
       font-size: 1.2rem;
       text-align: center;
       outline: none;
-      margin-top: 20px;
+      margin-top: 10px;
     }
 
     .mensagem {
@@ -67,11 +61,7 @@
 </head>
 <body>
 
-  <div class="narrativa">
-    Na próxima parede, algo diferente...
-  </div>
-
-  <h2>Fácil não é? Mas agora vamos começar o que realmente viemos pra fazer.</h2>
+  <h2>Na próxima parede, algo diferente... as palavras parecem se repetir infinitamente.</h2>
 
   <div class="palavras">
     embro<br>embro<br>embro<br>embro<br>embro<br>embro<br>embro<br>embro<br>embro<br>embro
@@ -80,6 +70,7 @@
   <input type="text" id="resposta" placeholder="Digite sua resposta...">
   <div class="mensagem" id="mensagem"></div>
 
+  <!-- Sons -->
   <audio id="musica" autoplay loop>
     <source src="misterio.mp3" type="audio/mpeg">
   </audio>
@@ -99,21 +90,26 @@
 
       if (resp === respostaCerta) {
         document.getElementById("acerto").play();
-        msg.textContent = "Correto...";
+        msg.textContent = "As palavras na parede se apagam lentamente...";
         setTimeout(() => window.location.href = "fase4.html", 1500);
-      } else if (resp === "dezembro") {
+      } 
+      else if (resp === "dezembro") {
         msg.textContent = "É só um?";
-      } else if (tentativas >= 3) {
+      }
+      else if (tentativas >= 3) {
         msg.textContent = "[voz distante]... Conte.";
-      } else {
-        msg.textContent = "Errado...";
+      } 
+      else {
+        msg.textContent = "As inscrições tremem, mas nada acontece...";
       }
     }
 
+    // Enviar com Enter
     document.getElementById("resposta").addEventListener("keypress", function(event) {
       if (event.key === "Enter") verificar();
     });
 
+    // Música ambiente
     const musica = document.getElementById("musica");
     musica.volume = 0.4;
     musica.play().catch(() => {
