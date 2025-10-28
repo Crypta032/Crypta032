@@ -1,110 +1,89 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Crypta 032</title>
-<style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%}
-  body{
-    font-family: "Cinzel", serif;
-    background: url('floresta.jpg') center center / cover no-repeat fixed;
-    color:#e6e6e6;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex-direction:column;
-    text-align:center;
-    overflow:hidden;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CRYPTA 032</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      background: url('floresta.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 3s ease-in-out;
+    }
 
-  /* texto compacto, sem ocupar demais */
-  .texto {
-    max-width:790px;
-    width:89%;
-    line-height:1.25;
-    font-size:1.25rem;
-    background: rgba(0,0,0,0.25); /* leve leitura sem criar um "quadrado" pesado */
-    padding:14px 18px;
-    border-radius:8px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.65);
-    backdrop-filter: blur(2px);
-  }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
 
-  .entrada {
-    margin-top:22px;
-    width:360px;
-    max-width:78%;
-    cursor:pointer;
-    transition:transform .35s ease, filter .35s ease;
-    filter:brightness(0.95);
-  }
-  .entrada:hover{ transform:scale(1.04); filter:brightness(1.08) }
+    .inicio-texto {
+      color: #ccc;
+      font-size: 1.35rem;
+      text-align: center;
+      max-width: 850px;
+      margin: 0 auto 30px;
+      line-height: 1.55;
+      text-shadow: 0 0 10px rgba(0,0,0,0.8);
+      animation: fadeInText 4s ease-in-out;
+    }
 
-  .fade-out {
-    animation: fadeOut 1.2s ease forwards;
-  }
-  @keyframes fadeOut { to { opacity:0; transform:scale(0.995); filter: blur(2px); } }
+    @keyframes fadeInText {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-  /* pequena dica discreta */
-  .hint { margin-top:10px; color:#a8a8a8; font-size:0.92rem; opacity:0.9 }
-</style>
+    .entrada {
+      width: 300px;
+      cursor: pointer;
+      transition: transform 0.3s ease, filter 0.3s ease;
+    }
+
+    .entrada:hover {
+      transform: scale(1.05);
+      filter: brightness(1.2);
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-
-  <div class="texto" id="texto">
-    Você, após horas caminhando perdido nessa floresta, finalmente encontra algo — 
-    uma caverna com a inscrição <strong>CRYPTA 032</strong>.<br><br>
+  <div class="inicio-texto">
+    Você, após horas caminhando perdido nessa floresta, finalmente encontra algo...
+    <br><br>
+    Uma caverna, marcada com a inscrição “CRYPTA 032”.
+    <br><br>
     Será uma boa ideia entrar?
   </div>
 
-  <img src="assets.png" alt="Entrada da Caverna" class="entrada" id="entrada">
+  <img src="entrada_caverna.png" alt="Entrada da caverna" class="entrada" onclick="entrarNaCaverna()">
 
-  <div class="hint">(clique na entrada para continuar)</div>
-
-  <!-- áudio -->
-  <audio id="misterio" loop>
-    <source src="misterio.mp3" type="audio/mpeg">
+  <audio id="somAmbiente" autoplay loop>
+    <source src="som_ambiente.mp3" type="audio/mpeg">
   </audio>
 
   <script>
-    // garante que usa os nomes que você tem: assets.png e misterio.mp3
-    const audio = document.getElementById('misterio');
-    audio.volume = 0;
-    // inicia o audio em mute para contornar bloqueios e faz fade-in
-    audio.play().then(() => {
-      let v = 0;
-      const t = setInterval(() => {
-        v += 0.02;
-        if (v >= 0.32) { audio.volume = 0.32; clearInterval(t); }
-        else audio.volume = v;
-      }, 120);
-    }).catch(() => {
-      // se autoplay bloqueado, tenta tocar no primeiro movimento do usuário
-      const unlock = () => {
-        audio.play().catch(()=>{});
-        document.removeEventListener('click', unlock);
-        document.removeEventListener('keydown', unlock);
+    function entrarNaCaverna() {
+      window.location.href = 'fase1.html';
+    }
+
+    window.addEventListener('load', () => {
+      const audio = document.getElementById('somAmbiente');
+      const playAudio = () => {
+        audio.play().catch(() => {});
+        document.removeEventListener('click', playAudio);
       };
-      document.addEventListener('click', unlock, { once:true });
-      document.addEventListener('keydown', unlock, { once:true });
+      document.addEventListener('click', playAudio);
     });
-
-    // clique na entrada: toca som de passo (se houver) e transição
-    const entrada = document.getElementById('entrada');
-    entrada.addEventListener('click', () => {
-      // toca som de passo (se existir, se não ignora)
-      const s = new Audio('passo.mp3');
-      s.volume = 0.7;
-      s.play().catch(()=>{});
-      // transição visual
-      document.body.classList.add('fade-out');
-      setTimeout(() => { location.href = 'fase1.html'; }, 1200);
-    });
-
-    // pequena segurança: se a imagem estiver com nome diferente, substitua apenas o src abaixo:
-    // document.getElementById('entrada').src = 'assets.png';
   </script>
 </body>
 </html>
