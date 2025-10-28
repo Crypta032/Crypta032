@@ -5,14 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Crypta 032 — Fase 2</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      background: url('A_digital_image_presents_a_dark,_textured_backgrou.png') center center / cover no-repeat fixed;
+      background: #000;
       color: #bdbdbd;
       font-family: 'Courier New', monospace;
       height: 100vh;
@@ -32,7 +28,7 @@
     h1 {
       font-size: 2em;
       letter-spacing: 2px;
-      text-shadow: 0 0 10px #000;
+      text-shadow: 0 0 20px #111;
       animation: flicker 3s infinite alternate;
     }
 
@@ -40,14 +36,15 @@
       margin-top: 20px;
       background: transparent;
       border: none;
-      border-bottom: 1px solid #666;
+      border-bottom: 1px solid #555;
       color: #bdbdbd;
       font-size: 1.2em;
       text-align: center;
       outline: none;
+      width: 200px;
     }
 
-    #dica {
+    #voz {
       margin-top: 15px;
       font-size: 0.9em;
       color: #777;
@@ -55,15 +52,13 @@
       transition: opacity 0.5s;
     }
 
-    audio {
-      display: none;
-    }
+    audio { display: none; }
   </style>
 </head>
 <body>
   <h1>"Qual o animal que tem irmãos construtores?"</h1>
   <input type="text" id="resposta" placeholder="...">
-  <div id="dica">[voz distante] :/</div>
+  <div id="voz">[voz distante] :/</div>
 
   <audio autoplay loop>
     <source src="caverna.mp3" type="audio/mpeg">
@@ -84,7 +79,7 @@
           tentativas++;
           this.value = "";
           if (tentativas >= 3) {
-            document.getElementById("dica").style.opacity = 1;
+            document.getElementById("voz").style.opacity = 1;
           }
         }
       }
