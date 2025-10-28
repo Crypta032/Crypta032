@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Crypta 032 – Fase 6</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{
+    height:100%;
+    background:#000;
+    color:#e6e6e6;
+    font-family:"Cinzel",serif;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    overflow:hidden;
+    padding:40px;
+  }
+  h1{
+    font-size:1.1rem;
+    margin-bottom:40px;
+    line-height:1.6;
+    color:#ccc;
+    max-width:850px;
+  }
+  .poema{
+    font-size:1.6rem;
+    line-height:2.2rem;
+    color:#dcdcdc;
+    margin-bottom:25px;
+    text-shadow:0 0 15px #111;
+  }
+  .subtexto{
+    font-size:1rem;
+    color:#bbb;
+    margin-bottom:50px;
+    font-style:italic;
+  }
+  #resposta{
+    background:none;
+    border:none;
+    border-bottom:2px solid #555;
+    color:#fff;
+    font-size:1.2rem;
+    text-align:center;
+    width:220px;
+    transition:all .3s;
+  }
+  #resposta:focus{
+    outline:none;
+    border-color:#aaa;
+  }
+  #mensagem{
+    margin-top:25px;
+    font-size:1rem;
+    color:#aaa;
+    min-height:22px;
+  }
+</style>
+</head>
+<body>
+
+  <h1>Você sente o ar ficar mais pesado, o chão parece pulsar...  
+  e ao olhar para o lado, uma antiga inscrição se revela, rabiscada em um pedaço de papel amarelado.</h1>
+
+  <div class="poema">
+    “Numa meia-noite agreste, quando eu lia, lento e triste,<br>
+    Vagos, curiosos tomos de ciências ancestrais”
+  </div>
+
+  <div class="subtexto">me pergunto da onde saiu tudo isso</div>
+
+  <input type="text" id="resposta" autocomplete="off" placeholder="" />
+
+  <div id="mensagem"></div>
+
+  <!-- Sons -->
+  <audio id="musica" autoplay loop>
+    <source src="misterio.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="acerto">
+    <source src="acerto.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const input = document.getElementById("resposta");
+    const msg = document.getElementById("mensagem");
+    const musica = document.getElementById("musica");
+    const acerto = document.getElementById("acerto");
+    let tentativas = 0;
+
+    // Música ambiente
+    musica.volume = 0.4;
+    musica.play().catch(() => {
+      document.body.addEventListener("click", () => musica.play(), { once: true });
+    });
+
+    // Enviar com Enter
+    input.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") verificar();
+    });
+
+    function verificar() {
+      const resp = input.value.trim().toLowerCase();
+      tentativas++;
+
+      if (resp === "boston") {
+        msg.style.color = "#0f0";
+        msg.textContent = "O papel se desfaz em poeira... e o silêncio domina a caverna.";
+        acerto.play();
+        setTimeout(() => { window.location.href = "fase7.html"; }, 1800);
+      } else if (tentativas >= 3) {
+        msg.style.color = "#999";
+        msg.textContent = "[voz distante]... Qual o lugar de origem disso tudo?";
+      } else {
+        msg.style.color = "#f55";
+        msg.textContent = "Nada acontece.";
+      }
+
+      input.value = "";
+    }
+  </script>
+</body>
+</html>
