@@ -1,99 +1,102 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Crypta 032</title>
-<style>
-  body {
-    margin: 0;
-    height: 100vh;
-    overflow: hidden;
-    background: url("floresta.png") center center/cover no-repeat;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: #f0f0f0;
-    font-family: "Cinzel", serif;
-    text-shadow: 0 0 10px #000;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crypta 032</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-family: "Cinzel", serif;
+      color: #c9c9c9;
+      background: url('floresta.jpg') no-repeat center center fixed;
+      background-size: cover;
+      overflow: hidden;
+    }
 
-  .texto {
-    max-width: 80%;
-    text-align: center;
-    line-height: 1.2;
-    font-size: 1.4rem;
-    margin-bottom: 40px;
-    background: rgba(0, 0, 0, 0.45);
-    padding: 20px 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
-  }
+    h1 {
+      font-size: 1.4rem;
+      max-width: 85%;
+      line-height: 1.6;
+      text-shadow: 0 0 8px #000;
+      opacity: 0;
+      animation: fadeIn 3s ease forwards;
+    }
 
-  .entrada {
-    width: 300px;
-    cursor: pointer;
-    transition: transform 0.4s ease, filter 0.4s ease;
-    filter: brightness(0.9);
-  }
+    .portal {
+      width: 280px;
+      max-width: 80%;
+      border-radius: 8px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
+      margin-top: 35px;
+      cursor: pointer;
+      opacity: 0;
+      transform: scale(0.95);
+      animation: aparecerPortal 4s ease forwards 2s;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
 
-  .entrada:hover {
-    transform: scale(1.05);
-    filter: brightness(1.1);
-  }
+    .portal:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 35px rgba(0, 0, 0, 0.9);
+    }
 
-  .fade-out {
-    animation: fadeOut 1.5s ease forwards;
-  }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-  @keyframes fadeOut {
-    to { opacity: 0; }
-  }
-</style>
+    @keyframes aparecerPortal {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .filtro {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.5), rgba(0,0,0,0.85) 80%);
+      animation: pulsar 6s infinite alternate;
+    }
+
+    @keyframes pulsar {
+      0% { opacity: 0.9; }
+      100% { opacity: 0.6; }
+    }
+  </style>
 </head>
 <body>
-  <div class="texto">
-    Você, após horas caminhando perdido nessa floresta, finalmente encontra algo —
-    uma caverna com a inscrição “CRYPTA 032”.<br><br>
-    Será uma boa ideia entrar?
-  </div>
+  <h1>Você, após horas caminhando perdido nessa floresta,<br>finalmente encontra algo.<br><br>Uma caverna com o nome gravado na pedra: <strong>CRYPTA 032</strong>.<br><br>Será uma boa ideia entrar?</h1>
+  
+  <img src="assets.png" alt="Entrada da caverna" class="portal" onclick="entrar()">
+  <div class="filtro"></div>
 
-  <img src="entrada.png" alt="Entrada da Caverna" class="entrada" id="entrada">
-
-  <audio id="ambiente" loop autoplay muted>
-    <source src="ambiente.mp3" type="audio/mpeg">
+  <audio id="ambiente" loop>
+    <source src="misterio.mp3" type="audio/mpeg">
   </audio>
 
   <script>
-    const audio = document.getElementById("ambiente");
-    const entrada = document.getElementById("entrada");
-
-    // fade-in do som ambiente
-    audio.volume = 0;
-    audio.play().then(() => {
-      let vol = 0;
-      const fade = setInterval(() => {
-        if (vol < 0.25) {
-          vol += 0.01;
-          audio.volume = vol;
-        } else {
-          clearInterval(fade);
-        }
-      }, 200);
-    }).catch(() => {
-      // desbloqueia autoplay se o navegador bloquear
-      document.body.addEventListener("mousemove", () => {
-        audio.play();
-      }, { once: true });
+    const musica = document.getElementById("ambiente");
+    musica.volume = 0.4;
+    musica.play().catch(() => {
+      document.body.addEventListener("click", () => musica.play(), { once: true });
     });
 
-    entrada.addEventListener("click", () => {
-      document.body.classList.add("fade-out");
+    function entrar() {
+      const som = new Audio("passo.mp3");
+      som.volume = 0.6;
+      som.play();
       setTimeout(() => {
         window.location.href = "fase1.html";
-      }, 1500);
-    });
+      }, 2000);
+    }
   </script>
 </body>
 </html>
