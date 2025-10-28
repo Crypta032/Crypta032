@@ -1,125 +1,109 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Crypta 032</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRYPTA 032</title>
   <style>
-    body {
+    * {
       margin: 0;
       padding: 0;
-      height: 100vh;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: url('floresta.png') no-repeat center center fixed;
+      background-size: cover;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      text-align: center;
-      font-family: "Cinzel", serif;
-      color: #c9c9c9;
-      background: url('floresta.jpg') no-repeat center center fixed;
-      background-size: cover;
+      height: 100vh;
+      flex-direction: column;
+      color: #c4b89b;
+      font-family: 'Cinzel', serif;
+      text-shadow: 0 0 15px #000;
       overflow: hidden;
-      position: relative;
     }
 
-    h1 {
-      font-size: 1.4rem;
-      max-width: 85%;
-      line-height: 1.6;
-      text-shadow: 0 0 8px #000;
-      opacity: 0;
-      animation: fadeIn 3s ease forwards;
-      margin-top: -30px; /* puxa o texto um pouco pra baixo da borda superior */
-    }
-
-    .portal {
-      width: 280px;
-      max-width: 80%;
-      border-radius: 8px;
-      box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
-      margin-top: 35px;
-      cursor: pointer;
-      opacity: 0;
-      transform: scale(0.95);
-      animation: aparecerPortal 4s ease forwards 2s;
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
-      z-index: 2;
-    }
-
-    .portal:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 35px rgba(0, 0, 0, 0.9);
-    }
-
-    .fade-out {
-      animation: fadeOut 1.5s ease forwards;
-    }
-
-    @keyframes fadeOut {
-      to {
-        opacity: 0;
-        filter: blur(10px);
-      }
+    .intro {
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 15px;
+      padding: 30px;
+      max-width: 700px;
+      text-align: center;
+      animation: fadeIn 3s ease;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes aparecerPortal {
-      from { opacity: 0; transform: scale(0.8); }
-      to { opacity: 1; transform: scale(1); }
+    .imagem-caverna {
+      width: 450px;
+      height: auto;
+      border-radius: 15px;
+      margin-top: 25px;
+      cursor: pointer;
+      transition: all 0.5s ease;
+      box-shadow: 0 0 20px rgba(0,0,0,0.7);
     }
 
-    .filtro {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.5), rgba(0,0,0,0.85) 80%);
-      animation: pulsar 6s infinite alternate;
-      z-index: 1;
+    .imagem-caverna:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 35px rgba(200,200,200,0.4);
     }
 
-    @keyframes pulsar {
-      0% { opacity: 0.9; }
-      100% { opacity: 0.6; }
+    .instrucoes {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      line-height: 1.4;
+    }
+
+    audio {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <h1>Você, após horas caminhando perdido nessa floresta,<br>finalmente encontra algo.<br><br>Uma caverna com o nome gravado na pedra: <strong>CRYPTA 032</strong>.<br><br>Será uma boa ideia entrar?</h1>
-  
-  <img src="assets.png" alt="Entrada da caverna" class="portal" onclick="entrar()">
-  <div class="filtro"></div>
+  <div class="intro">
+    <p class="instrucoes">
+      Você, após horas caminhando perdido nessa floresta, finalmente encontra algo...  
+      uma caverna com a inscrição <b>“CRYPTA 032”</b>.  
+      <br><br>
+      Será uma boa ideia entrar?
+    </p>
 
-  <audio id="ambiente" loop autoplay>
-    <source src="misterio.mp3" type="audio/mpeg">
+    <img src="assets.png" alt="Entrada da caverna" class="imagem-caverna" id="entrarBtn">
+  </div>
+
+  <audio id="ambiente" loop>
+    <source src="ambiente.mp3" type="audio/mpeg">
   </audio>
 
   <script>
-    const musica = document.getElementById("ambiente");
-    musica.volume = 0.4;
+    const audio = document.getElementById('ambiente');
+    const entrarBtn = document.getElementById('entrarBtn');
 
-    // Tenta iniciar o som imediatamente, mesmo se o navegador bloquear autoplay
-    musica.play().catch(() => {
-      document.body.addEventListener("click", () => musica.play(), { once: true });
-    });
-
-    function entrar() {
-      const corpo = document.body;
-      corpo.classList.add("fade-out");
-
-      const som = new Audio("passo.mp3");
-      som.volume = 0.6;
-      som.play();
-
-      // Espera o som + transição antes de entrar na fase 1
-      setTimeout(() => {
-        window.location.href = "fase1.html";
-      }, 1800);
+    // Toca som após interação do usuário (evita bloqueio de autoplay)
+    function iniciarSom() {
+      audio.volume = 0.5;
+      audio.play().catch(() => {});
+      document.removeEventListener('click', iniciarSom);
+      document.removeEventListener('keydown', iniciarSom);
     }
+
+    document.addEventListener('click', iniciarSom);
+    document.addEventListener('keydown', iniciarSom);
+
+    // Transição para fase 1
+    entrarBtn.addEventListener('click', () => {
+      entrarBtn.style.opacity = 0;
+      document.querySelector('.intro').style.opacity = 0;
+      setTimeout(() => {
+        window.location.href = 'fase1.html';
+      }, 1000);
+    });
   </script>
 </body>
 </html>
-    
