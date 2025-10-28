@@ -8,43 +8,36 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      background: url('floresta_escura.jpg') center center / cover no-repeat fixed;
+      background-color: #000;
       height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      cursor: pointer;
       font-family: 'Cinzel', serif;
       color: #ddd;
       position: relative;
     }
 
-    /* Efeito de sombra e neblina */
-    .sombra {
+    /* Efeito de iluminação sutil ao redor da imagem */
+    .brilho {
       position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at center, rgba(0,0,0,0) 10%, rgba(0,0,0,0.9) 80%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(0,0,0,1) 70%);
+      border-radius: 50%;
       z-index: 1;
+      animation: pulsar 4s infinite alternate ease-in-out;
     }
 
-    .neblina {
-      position: absolute;
-      inset: 0;
-      background: url('neblina.png') repeat;
-      opacity: 0.05;
-      animation: moverNeblina 60s linear infinite;
-      z-index: 2;
-    }
-
-    @keyframes moverNeblina {
-      0% { background-position: 0 0; }
-      100% { background-position: 1000px 0; }
+    @keyframes pulsar {
+      from { opacity: 0.7; transform: scale(1); }
+      to { opacity: 1; transform: scale(1.05); }
     }
 
     .entrada {
       position: relative;
-      z-index: 3;
+      z-index: 2;
       text-align: center;
       display: flex;
       flex-direction: column;
@@ -53,40 +46,37 @@
     }
 
     .entrada img {
-      width: 350px;
+      width: 340px;
       max-width: 80%;
       cursor: pointer;
-      filter: brightness(0.6) contrast(1.2);
+      filter: brightness(0.7) contrast(1.1);
       transition: all 0.3s ease;
-      border-radius: 10px;
-      box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
     }
 
     .entrada img:hover {
-      filter: brightness(0.9);
+      filter: brightness(1);
       transform: scale(1.05);
     }
 
     h1 {
-      font-size: 2.8em;
-      text-shadow: 0 0 15px #000;
+      font-size: 2.5em;
+      text-shadow: 0 0 20px #000;
       margin-bottom: 30px;
       letter-spacing: 2px;
-      color: #ccc;
-      animation: fadeTitle 4s infinite alternate;
+      color: #aaa;
+      animation: fadeTitle 3s infinite alternate;
     }
 
     @keyframes fadeTitle {
       from { opacity: 1; }
-      to { opacity: 0.6; }
+      to { opacity: 0.5; }
     }
 
     audio { display: none; }
   </style>
 </head>
 <body>
-  <div class="sombra"></div>
-  <div class="neblina"></div>
+  <div class="brilho"></div>
 
   <div class="entrada">
     <h1>Crypta 032</h1>
