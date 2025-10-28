@@ -19,6 +19,14 @@
       text-align: center;
     }
 
+    .narrativa {
+      font-size: 1rem;
+      color: #777;
+      margin-bottom: 50px;
+      max-width: 80%;
+      text-shadow: 0 0 6px #000;
+    }
+
     h2 {
       font-size: 1.6rem;
       margin-bottom: 60px;
@@ -51,12 +59,15 @@
 </head>
 <body>
 
+  <div class="narrativa">
+    Você percebe barulhos ao seu redor... pequenos passos, talvez roedores.
+  </div>
+
   <h2>Piolho da vergonha</h2>
 
-  <input type="text" id="resposta" placeholder="Sua resposta">
+  <input type="text" id="resposta" placeholder="Digite sua resposta...">
   <div class="mensagem" id="mensagem"></div>
 
-  <!-- Sons -->
   <audio id="musica" autoplay loop>
     <source src="misterio.mp3" type="audio/mpeg">
   </audio>
@@ -78,21 +89,17 @@
         document.getElementById("acerto").play();
         msg.textContent = "Correto...";
         setTimeout(() => window.location.href = "fase5.html", 1500);
-      } 
-      else if (tentativas >= 3) {
+      } else if (tentativas >= 3) {
         msg.textContent = "[voz distante]... Aonde você teria vergonha?";
-      } 
-      else {
+      } else {
         msg.textContent = "Errado...";
       }
     }
 
-    // Enviar com Enter
     document.getElementById("resposta").addEventListener("keypress", function(event) {
       if (event.key === "Enter") verificar();
     });
 
-    // Música ambiente
     const musica = document.getElementById("musica");
     musica.volume = 0.4;
     musica.play().catch(() => {
@@ -102,3 +109,4 @@
 
 </body>
 </html>
+
