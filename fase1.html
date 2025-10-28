@@ -51,6 +51,7 @@
     color:#aaa;
     min-height:22px;
   }
+  audio{display:none;}
 </style>
 </head>
 <body>
@@ -64,10 +65,28 @@
 
   <div id="mensagem"></div>
 
+  <!-- Sons -->
+  <audio id="musica" autoplay loop>
+    <source src="misterio.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="acerto">
+    <source src="acerto.mp3" type="audio/mpeg">
+  </audio>
+
   <script>
     const input = document.getElementById("resposta");
     const msg = document.getElementById("mensagem");
+    const musica = document.getElementById("musica");
+    const somAcerto = document.getElementById("acerto");
     let tentativas = 0;
+
+    // Tocar música ambiente automaticamente
+    musica.volume = 0.4;
+    musica.play().catch(() => {
+      // Caso o navegador bloqueie autoplay
+      document.body.addEventListener("click", () => musica.play(), { once: true });
+    });
 
     input.addEventListener("keydown", function(e) {
       if (e.key === "Enter") verificar();
@@ -77,6 +96,7 @@
       const resp = input.value.trim().toLowerCase();
 
       if (resp === "azul") {
+        somAcerto.play();
         msg.style.color = "#0f0";
         msg.textContent = "A parede se move, revelando uma passagem...";
         setTimeout(() => { window.location.href = "fase2.html"; }, 1800);
