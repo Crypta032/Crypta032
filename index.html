@@ -19,6 +19,7 @@
       background: url('floresta.jpg') no-repeat center center fixed;
       background-size: cover;
       overflow: hidden;
+      position: relative;
     }
 
     h1 {
@@ -28,6 +29,7 @@
       text-shadow: 0 0 8px #000;
       opacity: 0;
       animation: fadeIn 3s ease forwards;
+      margin-top: -30px; /* puxa o texto um pouco pra baixo da borda superior */
     }
 
     .portal {
@@ -41,11 +43,23 @@
       transform: scale(0.95);
       animation: aparecerPortal 4s ease forwards 2s;
       transition: transform 0.4s ease, box-shadow 0.4s ease;
+      z-index: 2;
     }
 
     .portal:hover {
       transform: scale(1.03);
       box-shadow: 0 0 35px rgba(0, 0, 0, 0.9);
+    }
+
+    .fade-out {
+      animation: fadeOut 1.5s ease forwards;
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        filter: blur(10px);
+      }
     }
 
     @keyframes fadeIn {
@@ -64,6 +78,7 @@
       pointer-events: none;
       background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.5), rgba(0,0,0,0.85) 80%);
       animation: pulsar 6s infinite alternate;
+      z-index: 1;
     }
 
     @keyframes pulsar {
@@ -78,24 +93,31 @@
   <img src="assets.png" alt="Entrada da caverna" class="portal" onclick="entrar()">
   <div class="filtro"></div>
 
-  <audio id="ambiente" loop>
+  <audio id="ambiente" loop autoplay>
     <source src="misterio.mp3" type="audio/mpeg">
   </audio>
 
   <script>
     const musica = document.getElementById("ambiente");
     musica.volume = 0.4;
+
+    // Tenta iniciar o som imediatamente, mesmo se o navegador bloquear autoplay
     musica.play().catch(() => {
       document.body.addEventListener("click", () => musica.play(), { once: true });
     });
 
     function entrar() {
+      const corpo = document.body;
+      corpo.classList.add("fade-out");
+
       const som = new Audio("passo.mp3");
       som.volume = 0.6;
       som.play();
+
+      // Espera o som + transição antes de entrar na fase 1
       setTimeout(() => {
         window.location.href = "fase1.html";
-      }, 2000);
+      }, 1800);
     }
   </script>
 </body>
