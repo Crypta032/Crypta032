@@ -17,34 +17,33 @@
     justify-content:center;
     text-align:center;
     overflow:hidden;
-    padding:30px;
+    padding:40px;
   }
   h1{
-    font-size:1.3rem;
-    margin-bottom:30px;
+    font-size:1.2rem;
+    margin-bottom:40px;
     line-height:1.6;
     color:#ccc;
     max-width:800px;
   }
   .pergunta{
     font-size:1.6rem;
-    margin-bottom:25px;
+    margin-bottom:30px;
     color:#f1f1f1;
   }
-  input{
-    background:rgba(255,255,255,0.08);
+  #resposta{
+    background:none;
     border:none;
-    border-bottom:2px solid #444;
+    border-bottom:2px solid #555;
     color:#fff;
-    padding:8px 12px;
-    font-size:1.1rem;
+    font-size:1.2rem;
     text-align:center;
-    width:200px;
+    width:220px;
     transition:all .3s;
   }
-  input:focus{
+  #resposta:focus{
     outline:none;
-    border-color:#888;
+    border-color:#aaa;
   }
   #mensagem{
     margin-top:25px;
@@ -61,16 +60,15 @@
 
   <div class="pergunta">“Qual a cor do céu?”</div>
 
-  <input type="text" id="resposta" placeholder="digite sua resposta">
+  <input type="text" id="resposta" autocomplete="off" placeholder="" />
 
   <div id="mensagem"></div>
 
   <script>
-    let tentativas = 0;
     const input = document.getElementById("resposta");
     const msg = document.getElementById("mensagem");
+    let tentativas = 0;
 
-    // permite enviar com Enter
     input.addEventListener("keydown", function(e) {
       if (e.key === "Enter") verificar();
     });
@@ -81,7 +79,7 @@
       if (resp === "azul") {
         msg.style.color = "#0f0";
         msg.textContent = "A parede se move, revelando uma passagem...";
-        setTimeout(()=>{ location.href = "fase2.html"; },1800);
+        setTimeout(() => { window.location.href = "fase2.html"; }, 1800);
       } else {
         tentativas++;
         msg.style.color = "#f55";
@@ -91,6 +89,7 @@
           msg.textContent = "Uma voz misteriosa sussurra: “Precisa de dica?”";
         }
       }
+      input.value = "";
     }
   </script>
 </body>
