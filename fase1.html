@@ -19,33 +19,39 @@
     overflow:hidden;
     padding:30px;
   }
-  h1{font-size:1.3rem;margin-bottom:20px;line-height:1.5;color:#ccc}
-  .pergunta{font-size:1.6rem;margin:10px 0 25px;color:#f1f1f1}
+  h1{
+    font-size:1.3rem;
+    margin-bottom:30px;
+    line-height:1.6;
+    color:#ccc;
+    max-width:800px;
+  }
+  .pergunta{
+    font-size:1.6rem;
+    margin-bottom:25px;
+    color:#f1f1f1;
+  }
   input{
-    background:rgba(255,255,255,0.1);
-    border:1px solid #444;
+    background:rgba(255,255,255,0.08);
+    border:none;
+    border-bottom:2px solid #444;
     color:#fff;
     padding:8px 12px;
-    border-radius:6px;
     font-size:1.1rem;
     text-align:center;
-    width:180px;
+    width:200px;
     transition:all .3s;
   }
-  input:focus{outline:none;border-color:#999}
-  button{
-    margin-left:8px;
-    padding:8px 16px;
-    font-size:1.05rem;
-    background:#111;
-    border:1px solid #555;
-    color:#ddd;
-    border-radius:6px;
-    cursor:pointer;
-    transition:all .3s;
+  input:focus{
+    outline:none;
+    border-color:#888;
   }
-  button:hover{background:#222;color:#fff}
-  #mensagem{margin-top:20px;font-size:1rem;color:#aaa;min-height:22px}
+  #mensagem{
+    margin-top:25px;
+    font-size:1rem;
+    color:#aaa;
+    min-height:22px;
+  }
 </style>
 </head>
 <body>
@@ -55,19 +61,22 @@
 
   <div class="pergunta">“Qual a cor do céu?”</div>
 
-  <div>
-    <input type="text" id="resposta" placeholder="sua resposta">
-    <button onclick="verificar()">Enviar</button>
-  </div>
+  <input type="text" id="resposta" placeholder="digite sua resposta">
 
   <div id="mensagem"></div>
 
   <script>
     let tentativas = 0;
+    const input = document.getElementById("resposta");
+    const msg = document.getElementById("mensagem");
+
+    // permite enviar com Enter
+    input.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") verificar();
+    });
 
     function verificar() {
-      const resp = document.getElementById("resposta").value.trim().toLowerCase();
-      const msg = document.getElementById("mensagem");
+      const resp = input.value.trim().toLowerCase();
 
       if (resp === "azul") {
         msg.style.color = "#0f0";
