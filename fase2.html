@@ -57,8 +57,12 @@
   <input type="text" id="resposta" placeholder="...">
   <div id="voz">[voz distante] :/</div>
 
-  <audio autoplay loop>
-    <source src="caverna.mp3" type="audio/mpeg">
+  <audio id="musica" autoplay loop>
+    <source src="misterio.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="acerto">
+    <source src="acerto.mp3" type="audio/mpeg">
   </audio>
 
   <script>
@@ -69,6 +73,7 @@
       if (e.key === "Enter") {
         const resposta = this.value.trim().toLowerCase();
         if (resposta === respostaCerta) {
+          document.getElementById("acerto").play();
           document.body.style.transition = "opacity 2s ease";
           document.body.style.opacity = 0;
           setTimeout(() => window.location.href = "fase3.html", 2000);
