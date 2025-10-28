@@ -1,102 +1,110 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Crypta 032</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      font-family: "Cinzel", serif;
-      color: #c9c9c9;
-      background: url('floresta.jpg') no-repeat center center fixed;
-      background-size: cover;
-      overflow: hidden;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Crypta 032</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family: "Cinzel", serif;
+    background: url('floresta.jpg') center center / cover no-repeat fixed;
+    color:#e6e6e6;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    text-align:center;
+    overflow:hidden;
+  }
 
-    h1 {
-      font-size: 1.4rem;
-      max-width: 85%;
-      line-height: 1.6;
-      text-shadow: 0 0 8px #000;
-      opacity: 0;
-      animation: fadeIn 3s ease forwards;
-    }
+  /* texto compacto, sem ocupar demais */
+  .texto {
+    max-width:760px;
+    width:86%;
+    line-height:1.25;
+    font-size:1.15rem;
+    background: rgba(0,0,0,0.25); /* leve leitura sem criar um "quadrado" pesado */
+    padding:14px 18px;
+    border-radius:8px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.65);
+    backdrop-filter: blur(2px);
+  }
 
-    .portal {
-      width: 280px;
-      max-width: 80%;
-      border-radius: 8px;
-      box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
-      margin-top: 35px;
-      cursor: pointer;
-      opacity: 0;
-      transform: scale(0.95);
-      animation: aparecerPortal 4s ease forwards 2s;
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
-    }
+  .entrada {
+    margin-top:28px;
+    width:300px;
+    max-width:70%;
+    cursor:pointer;
+    transition:transform .35s ease, filter .35s ease;
+    filter:brightness(0.95);
+  }
+  .entrada:hover{ transform:scale(1.04); filter:brightness(1.08) }
 
-    .portal:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 35px rgba(0, 0, 0, 0.9);
-    }
+  .fade-out {
+    animation: fadeOut 1.2s ease forwards;
+  }
+  @keyframes fadeOut { to { opacity:0; transform:scale(0.995); filter: blur(2px); } }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes aparecerPortal {
-      from { opacity: 0; transform: scale(0.8); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    .filtro {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.5), rgba(0,0,0,0.85) 80%);
-      animation: pulsar 6s infinite alternate;
-    }
-
-    @keyframes pulsar {
-      0% { opacity: 0.9; }
-      100% { opacity: 0.6; }
-    }
-  </style>
+  /* pequena dica discreta */
+  .hint { margin-top:10px; color:#a8a8a8; font-size:0.92rem; opacity:0.9 }
+</style>
 </head>
 <body>
-  <h1>Você, após horas caminhando perdido nessa floresta,<br>finalmente encontra algo.<br><br>Uma caverna com o nome gravado na pedra: <strong>CRYPTA 032</strong>.<br><br>Será uma boa ideia entrar?</h1>
-  
-  <img src="assets.png" alt="Entrada da caverna" class="portal" onclick="entrar()">
-  <div class="filtro"></div>
 
-  <audio id="ambiente" loop>
+  <div class="texto" id="texto">
+    Você, após horas caminhando perdido nessa floresta, finalmente encontra algo — 
+    uma caverna com a inscrição <strong>CRYPTA 032</strong>.<br><br>
+    Será uma boa ideia entrar?
+  </div>
+
+  <img src="assets.png" alt="Entrada da Caverna" class="entrada" id="entrada">
+
+  <div class="hint">(clique na entrada para continuar)</div>
+
+  <!-- áudio -->
+  <audio id="misterio" loop>
     <source src="misterio.mp3" type="audio/mpeg">
   </audio>
 
   <script>
-    const musica = document.getElementById("ambiente");
-    musica.volume = 0.4;
-    musica.play().catch(() => {
-      document.body.addEventListener("click", () => musica.play(), { once: true });
+    // garante que usa os nomes que você tem: assets.png e misterio.mp3
+    const audio = document.getElementById('misterio');
+    audio.volume = 0;
+    // inicia o audio em mute para contornar bloqueios e faz fade-in
+    audio.play().then(() => {
+      let v = 0;
+      const t = setInterval(() => {
+        v += 0.02;
+        if (v >= 0.32) { audio.volume = 0.32; clearInterval(t); }
+        else audio.volume = v;
+      }, 120);
+    }).catch(() => {
+      // se autoplay bloqueado, tenta tocar no primeiro movimento do usuário
+      const unlock = () => {
+        audio.play().catch(()=>{});
+        document.removeEventListener('click', unlock);
+        document.removeEventListener('keydown', unlock);
+      };
+      document.addEventListener('click', unlock, { once:true });
+      document.addEventListener('keydown', unlock, { once:true });
     });
 
-    function entrar() {
-      const som = new Audio("passo.mp3");
-      som.volume = 0.6;
-      som.play();
-      setTimeout(() => {
-        window.location.href = "fase1.html";
-      }, 2000);
-    }
+    // clique na entrada: toca som de passo (se houver) e transição
+    const entrada = document.getElementById('entrada');
+    entrada.addEventListener('click', () => {
+      // toca som de passo (se existir, se não ignora)
+      const s = new Audio('passo.mp3');
+      s.volume = 0.7;
+      s.play().catch(()=>{});
+      // transição visual
+      document.body.classList.add('fade-out');
+      setTimeout(() => { location.href = 'fase1.html'; }, 1200);
+    });
+
+    // pequena segurança: se a imagem estiver com nome diferente, substitua apenas o src abaixo:
+    // document.getElementById('entrada').src = 'assets.png';
   </script>
 </body>
 </html>
