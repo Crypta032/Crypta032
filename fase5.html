@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crypta 032 - Fase 5</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      color: #b0b0b0;
+      font-family: "Cinzel", serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    img {
+      width: 300px;
+      max-width: 90%;
+      margin-bottom: 30px;
+      filter: brightness(0.8) contrast(1.2);
+    }
+
+    h2 {
+      font-size: 1.3rem;
+      margin-bottom: 60px;
+      color: #aaa;
+      text-shadow: 0 0 8px #000;
+    }
+
+    input {
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid #666;
+      color: #ddd;
+      font-size: 1.2rem;
+      text-align: center;
+      outline: none;
+      margin-top: 20px;
+    }
+
+    .mensagem {
+      margin-top: 25px;
+      color: #888;
+      font-size: 1rem;
+      height: 20px;
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Imagem da fórmula -->
+  <img src="bhaskara.png" alt="Enigma da fórmula">
+
+  <h2>De quem é isso?</h2>
+
+  <input type="text" id="resposta" placeholder="Sua resposta">
+  <div class="mensagem" id="mensagem"></div>
+
+  <!-- Sons -->
+  <audio id="musica" autoplay loop>
+    <source src="misterio.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="acerto">
+    <source src="acerto.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const respostaCerta = "bhaskara akaria";
+    let tentativas = 0;
+
+    function verificar() {
+      const resp = document.getElementById("resposta").value.trim().toLowerCase();
+      const msg = document.getElementById("mensagem");
+      tentativas++;
+
+      if (resp === respostaCerta) {
+        document.getElementById("acerto").play();
+        msg.textContent = "Correto...";
+        setTimeout(() => window.location.href = "fase6.html", 1500);
+      } 
+      else if (tentativas >= 3) {
+        msg.textContent = "[voz distante]... Quem é o criador?";
+      } 
+      else {
+        msg.textContent = "Errado...";
+      }
+    }
+
+    // Enviar com Enter
+    document.getElementById("resposta").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") verificar();
+    });
+
+    // Música ambiente
+    const musica = document.getElementById("musica");
+    musica.volume = 0.4;
+    musica.play().catch(() => {
+      document.body.addEventListener("click", () => musica.play(), { once: true });
+    });
+  </script>
+
+</body>
+</html>
