@@ -59,7 +59,7 @@
   <h1>E você começa a perceber, que não há portas à sua volta, e nem saídas nessa caverna...<br>
   Apenas uma pergunta na parede.</h1>
 
-  <div class="pergunta">“O que é, o que é... que quanto mais se tira, maior fica?”</div>
+  <div class="pergunta">“Qual o animal que tem irmãos contrutores?”</div>
 
   <input type="text" id="resposta" autocomplete="off" placeholder="" />
 
@@ -94,7 +94,7 @@
     function verificar() {
       const resp = input.value.trim().toLowerCase();
 
-      if (resp === "buraco") {
+      if (resp === "porco") {
         somAcerto.play();
         msg.style.color = "#0f0";
         msg.textContent = "As pedras à frente se movem lentamente...";
@@ -105,7 +105,7 @@
         msg.textContent = "Nada acontece.";
         if (tentativas === 3) {
           msg.style.color = "#999";
-          msg.textContent = "Uma voz distante murmura: “Pense no vazio...”";
+          msg.textContent = "Uma voz distante murmura: “:/”";
         }
       }
       input.value = "";
