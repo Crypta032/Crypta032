@@ -8,7 +8,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      background: url('floresta.jpg') center center / cover no-repeat fixed;
+      background: url('floresta_escura.jpg') center center / cover no-repeat fixed;
       height: 100vh;
       display: flex;
       align-items: center;
@@ -17,44 +17,77 @@
       cursor: pointer;
       font-family: 'Cinzel', serif;
       color: #ddd;
+      position: relative;
     }
 
-    .overlay {
+    /* Efeito de sombra e neblina */
+    .sombra {
       position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.7);
+      background: radial-gradient(circle at center, rgba(0,0,0,0) 10%, rgba(0,0,0,0.9) 80%);
       z-index: 1;
+    }
+
+    .neblina {
+      position: absolute;
+      inset: 0;
+      background: url('neblina.png') repeat;
+      opacity: 0.05;
+      animation: moverNeblina 60s linear infinite;
+      z-index: 2;
+    }
+
+    @keyframes moverNeblina {
+      0% { background-position: 0 0; }
+      100% { background-position: 1000px 0; }
     }
 
     .entrada {
       position: relative;
-      z-index: 2;
+      z-index: 3;
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
     .entrada img {
-      width: 320px;
+      width: 350px;
+      max-width: 80%;
       cursor: pointer;
-      filter: brightness(0.7);
+      filter: brightness(0.6) contrast(1.2);
       transition: all 0.3s ease;
+      border-radius: 10px;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
     }
 
     .entrada img:hover {
-      filter: brightness(1);
+      filter: brightness(0.9);
       transform: scale(1.05);
     }
 
     h1 {
       font-size: 2.8em;
-      text-shadow: 0 0 10px #000;
-      margin-bottom: 20px;
+      text-shadow: 0 0 15px #000;
+      margin-bottom: 30px;
+      letter-spacing: 2px;
+      color: #ccc;
+      animation: fadeTitle 4s infinite alternate;
+    }
+
+    @keyframes fadeTitle {
+      from { opacity: 1; }
+      to { opacity: 0.6; }
     }
 
     audio { display: none; }
   </style>
 </head>
 <body>
-  <div class="overlay"></div>
+  <div class="sombra"></div>
+  <div class="neblina"></div>
+
   <div class="entrada">
     <h1>Crypta 032</h1>
     <img src="assets.png" alt="Entrada da Caverna" onclick="entrar()">
