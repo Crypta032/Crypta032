@@ -1,61 +1,115 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Crypta 032 — Fase 2</title>
-<style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{background:#000;color:#bdbdbd;font-family:'Courier New',monospace;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-  h1{font-size:2rem;letter-spacing:1px;text-shadow:0 0 14px #000;margin-bottom:18px}
-  input{margin-top:10px;background:transparent;border:none;border-bottom:1px solid #444;color:#bdbdbd;font-size:1.1rem;padding:8px;text-align:center;width:220px;outline:none}
-  #voz{margin-top:14px;color:#666;opacity:0;transition:opacity .5s;font-style:italic}
-  audio{display:none}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crypta 032 — Fase 2</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      color: #e0e0e0;
+      font-family: "Cinzel", serif;
+      text-align: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 1.2rem;
+      max-width: 80%;
+      line-height: 1.5rem;
+      opacity: 0.85;
+      margin-bottom: 40px;
+    }
+
+    .question {
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+
+    input {
+      background: none;
+      border: none;
+      border-bottom: 1px solid #666;
+      color: #e0e0e0;
+      font-size: 1.2rem;
+      outline: none;
+      text-align: center;
+      width: 220px;
+      transition: border-color 0.3s;
+    }
+
+    input:focus {
+      border-color: #aaa;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    .misterious {
+      color: #888;
+      font-style: italic;
+      margin-top: 25px;
+      font-size: 0.95rem;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade {
+      animation: fadeIn 1.2s ease forwards;
+    }
+  </style>
 </head>
 <body>
-  <h1>Qual o animal que tem irmãos construtores?</h1>
-  <input id="resposta" placeholder="..." autocomplete="off">
-  <div id="voz">[voz distante] :/</div>
+  <h1 class="fade">E você começa a perceber... não há portas à sua volta, nem saídas nessa caverna.<br>Apenas uma pergunta na parede.</h1>
 
-  <audio id="musica" loop>
-    <source src="misterio.mp3" type="audio/mpeg">
-  </audio>
-  <audio id="acerto">
-    <source src="acerto.mp3" type="audio/mpeg">
-  </audio>
+  <div class="question fade">"Qual o animal que tem irmãos construtores?"</div>
 
-<script>
-  const musica = document.getElementById('musica');
-  const acerto = document.getElementById('acerto');
-  const voz = document.getElementById('voz');
-  let tentativas = 0;
-  const correta = 'porco';
-  const input = document.getElementById('resposta');
+  <input type="text" id="answer" placeholder="Digite sua resposta..." autocomplete="off">
+  <div class="message" id="message"></div>
+  <div class="misterious" id="hint"></div>
 
-  musica.play().catch(()=>{});
-  function garantirAudioUserGesture() {
-    musica.play().catch(()=>{});
-    document.removeEventListener('click', garantirAudioUserGesture);
-    document.removeEventListener('keydown', garantirAudioUserGesture);
-  }
-  document.addEventListener('click', garantirAudioUserGesture);
-  document.addEventListener('keydown', garantirAudioUserGesture);
+  <script>
+    const answerInput = document.getElementById("answer");
+    const message = document.getElementById("message");
+    const hint = document.getElementById("hint");
 
-  input.addEventListener('keyup', (e)=>{
-    if(e.key !== 'Enter') return;
-    const val = input.value.trim().toLowerCase();
-    if(val === correta){
-      try{ acerto.play(); }catch(e){}
-      document.body.style.transition = 'opacity 1.4s ease';
-      document.body.style.opacity = 0;
-      setTimeout(()=> location.href = 'fase3.html', 1400);
-    } else {
-      tentativas++;
-      input.value = '';
-      if(tentativas >= 3) voz.style.opacity = 1;
-    }
-  });
-</script>
+    const correctAnswer = "porco";
+    const hintText = ":/";
+    let attempts = 0;
+
+    answerInput.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        const userAnswer = answerInput.value.trim().toLowerCase();
+        attempts++;
+
+        if (userAnswer === correctAnswer) {
+          message.textContent = "Você ouve algo se mover... uma passagem se abre lentamente.";
+          message.style.color = "#00c853";
+          setTimeout(() => {
+            window.location.href = "fase3.html";
+          }, 2500);
+        } else {
+          message.textContent = "Nada acontece.";
+          message.style.color = "#d32f2f";
+          if (attempts === 3) {
+            hint.textContent = "Uma voz sussurra: \"" + hintText + "\"";
+          }
+        }
+      }
+    });
+  </script>
 </body>
 </html>
