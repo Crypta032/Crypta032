@@ -19,6 +19,14 @@
       text-align: center;
     }
 
+    .narrativa {
+      font-size: 1rem;
+      color: #777;
+      margin-bottom: 50px;
+      max-width: 80%;
+      text-shadow: 0 0 6px #000;
+    }
+
     h1 {
       font-size: 3rem;
       margin-bottom: 50px;
@@ -60,13 +68,16 @@
 </head>
 <body>
 
+  <div class="narrativa">
+    “Essa caverna é meio úmida”, você pensa sem ter muito o que fazer — a não ser continuar.
+  </div>
+
   <h1>±b...</h1>
   <h2>De quem é isso?</h2>
 
-  <input type="text" id="resposta" placeholder="Sua resposta">
+  <input type="text" id="resposta" placeholder="Digite sua resposta...">
   <div class="mensagem" id="mensagem"></div>
 
-  <!-- Sons -->
   <audio id="musica" autoplay loop>
     <source src="misterio.mp3" type="audio/mpeg">
   </audio>
@@ -88,21 +99,17 @@
         document.getElementById("acerto").play();
         msg.textContent = "Correto...";
         setTimeout(() => window.location.href = "fase6.html", 1500);
-      } 
-      else if (tentativas >= 3) {
+      } else if (tentativas >= 3) {
         msg.textContent = "[voz distante]... Quem é o criador?";
-      } 
-      else {
+      } else {
         msg.textContent = "Errado...";
       }
     }
 
-    // Enviar com Enter
     document.getElementById("resposta").addEventListener("keypress", function(event) {
       if (event.key === "Enter") verificar();
     });
 
-    // Música ambiente
     const musica = document.getElementById("musica");
     musica.volume = 0.4;
     musica.play().catch(() => {
