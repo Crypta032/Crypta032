@@ -1,98 +1,64 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Crypta 032 — Fase 1</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      background-color: #000;
-      color: #bdbdbd;
-      font-family: 'Courier New', monospace;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      animation: fadeIn 2s ease-in;
-    }
-
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-    h1 {
-      font-size: 2em;
-      letter-spacing: 2px;
-      text-shadow: 0 0 10px #111;
-      animation: flicker 3s infinite alternate;
-    }
-
-    @keyframes flicker {
-      0%,100% { opacity: 1; }
-      50% { opacity: 0.85; }
-    }
-
-    input {
-      margin-top: 20px;
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid #555;
-      color: #bdbdbd;
-      font-size: 1.2em;
-      text-align: center;
-      outline: none;
-      width: 200px;
-    }
-
-    #voz {
-      margin-top: 15px;
-      font-size: 0.9em;
-      color: #666;
-      opacity: 0;
-      transition: opacity 0.5s;
-    }
-
-    audio { display: none; }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Crypta 032 — Fase 1</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#000;color:#bdbdbd;font-family:'Courier New',monospace;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+  h1{font-size:2rem;letter-spacing:1px;text-shadow:0 0 14px #000;margin-bottom:18px}
+  input{margin-top:10px;background:transparent;border:none;border-bottom:1px solid #444;color:#bdbdbd;font-size:1.1rem;padding:8px;text-align:center;width:220px;outline:none}
+  #voz{margin-top:14px;color:#666;opacity:0;transition:opacity .5s;font-style:italic}
+  audio{display:none}
+</style>
 </head>
 <body>
-  <h1>"Qual a cor do céu?"</h1>
-  <input type="text" id="resposta" placeholder="...">
+  <h1>Qual a cor do céu?</h1>
+  <input id="resposta" placeholder="..." autocomplete="off">
   <div id="voz">[voz distante] Precisa de dica?</div>
 
-  <!-- Música de fundo -->
-  <audio id="musica" autoplay loop>
+  <audio id="musica" loop>
     <source src="misterio.mp3" type="audio/mpeg">
   </audio>
-
-  <!-- Som de acerto -->
   <audio id="acerto">
     <source src="acerto.mp3" type="audio/mpeg">
   </audio>
 
-  <script>
-    let tentativas = 0;
-    const respostaCerta = "azul";
+<script>
+  const musica = document.getElementById('musica');
+  const acerto = document.getElementById('acerto');
+  const voz = document.getElementById('voz');
+  let tentativas = 0;
+  const correta = 'azul';
+  const input = document.getElementById('resposta');
 
-    document.getElementById("resposta").addEventListener("keyup", function(e) {
-      if (e.key === "Enter") {
-        const resposta = this.value.trim().toLowerCase();
-        if (resposta === respostaCerta) {
-          document.getElementById("acerto").play(); // toca som de acerto
-          document.body.style.transition = "opacity 2s ease";
-          document.body.style.opacity = 0;
-          setTimeout(() => window.location.href = "fase2.html", 2000);
-        } else {
-          tentativas++;
-          this.value = "";
-          if (tentativas >= 3) {
-            document.getElementById("voz").style.opacity = 1;
-          }
-        }
-      }
-    });
-  </script>
+  // tenta tocar a música imediatamente (pode falhar)
+  musica.play().catch(()=>{/* será iniciado na 1ª interação */});
+
+  // garante que se o navegador bloqueou autoplay, qualquer interação a libera
+  function garantirAudioUserGesture() {
+    musica.play().catch(()=>{});
+    document.removeEventListener('click', garantirAudioUserGesture);
+    document.removeEventListener('keydown', garantirAudioUserGesture);
+  }
+  document.addEventListener('click', garantirAudioUserGesture);
+  document.addEventListener('keydown', garantirAudioUserGesture);
+
+  input.addEventListener('keyup', (e)=>{
+    if(e.key !== 'Enter') return;
+    const val = input.value.trim().toLowerCase();
+    if(val === correta){
+      try{ acerto.play(); }catch(e){}
+      document.body.style.transition = 'opacity 1.4s ease';
+      document.body.style.opacity = 0;
+      setTimeout(()=> location.href = 'fase2.html', 1400);
+    } else {
+      tentativas++;
+      input.value = '';
+      if(tentativas >= 3) voz.style.opacity = 1;
+    }
+  });
+</script>
 </body>
 </html>
