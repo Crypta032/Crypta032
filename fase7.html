@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Crypta 032 – Fase 7</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{
+    height:100%;
+    background:#000;
+    color:#e6e6e6;
+    font-family:"Cinzel",serif;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    overflow:hidden;
+    padding:40px;
+  }
+  h1{
+    font-size:1.1rem;
+    margin-bottom:50px;
+    line-height:1.6;
+    color:#ccc;
+    max-width:800px;
+  }
+  .invisivel{
+    font-size:1.2rem;
+    line-height:1.8rem;
+    color:transparent;
+    user-select:text;
+    text-shadow:0 0 20px rgba(255,255,255,0);
+    cursor:default;
+    margin-bottom:30px;
+  }
+  #resposta{
+    background:none;
+    border:none;
+    border-bottom:2px solid #555;
+    color:#fff;
+    font-size:1.2rem;
+    text-align:center;
+    width:220px;
+    margin-top:40px;
+    transition:all .3s;
+  }
+  #resposta:focus{
+    outline:none;
+    border-color:#aaa;
+  }
+  #mensagem{
+    margin-top:25px;
+    font-size:1rem;
+    color:#aaa;
+    min-height:22px;
+  }
+</style>
+</head>
+<body>
+
+  <h1>
+    O frio invade o ar. Um leve brilho azulado dança nas paredes úmidas da caverna.  
+    À frente, há algo... mas você mal consegue ver — apenas ao tocar, percebe que há palavras escondidas.
+  </h1>
+
+  <div class="invisivel">
+    43º 51' 22'' N<br>
+    18º 24' 47'' E<br><br>
+    o que nao foi o melhor e nem o pior entre os melhores de 1984...
+  </div>
+
+  <input type="text" id="resposta" autocomplete="off" placeholder="" />
+  <div id="mensagem"></div>
+
+  <!-- Sons -->
+  <audio id="musica" autoplay loop>
+    <source src="misterio.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="acerto">
+    <source src="acerto.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const input = document.getElementById("resposta");
+    const msg = document.getElementById("mensagem");
+    const musica = document.getElementById("musica");
+    const acerto = document.getElementById("acerto");
+    let tentativas = 0;
+
+    // Música ambiente
+    musica.volume = 0.4;
+    musica.play().catch(() => {
+      document.body.addEventListener("click", () => musica.play(), { once: true });
+    });
+
+    // Enviar com Enter
+    input.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") verificar();
+    });
+
+    function verificar() {
+      const resp = input.value.trim().toLowerCase();
+      tentativas++;
+
+      if (resp === "brian orser") {
+        msg.style.color = "#0f0";
+        msg.textContent = "O gelo se parte sob seus pés... e uma nova passagem se revela.";
+        acerto.play();
+        setTimeout(() => { window.location.href = "fase8.html"; }, 1800);
+      } else if (tentativas >= 3) {
+        msg.style.color = "#999";
+        msg.textContent = "[voz distante]... no gelo.";
+      } else {
+        msg.style.color = "#f55";
+        msg.textContent = "Nada acontece.";
+      }
+
+      input.value = "";
+    }
+  </script>
+</body>
+</html>
