@@ -3,62 +3,86 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Crypta 032 — Fase 1</title>
+<title>Crypta 032 – Fase 1</title>
 <style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{background:#000;color:#bdbdbd;font-family:'Courier New',monospace;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-  h1{font-size:2rem;letter-spacing:1px;text-shadow:0 0 14px #000;margin-bottom:18px}
-  input{margin-top:10px;background:transparent;border:none;border-bottom:1px solid #444;color:#bdbdbd;font-size:1.1rem;padding:8px;text-align:center;width:220px;outline:none}
-  #voz{margin-top:14px;color:#666;opacity:0;transition:opacity .5s;font-style:italic}
-  audio{display:none}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{
+    height:100%;
+    background:#000;
+    color:#e6e6e6;
+    font-family:"Cinzel",serif;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    overflow:hidden;
+    padding:30px;
+  }
+  h1{font-size:1.3rem;margin-bottom:20px;line-height:1.5;color:#ccc}
+  .pergunta{font-size:1.6rem;margin:10px 0 25px;color:#f1f1f1}
+  input{
+    background:rgba(255,255,255,0.1);
+    border:1px solid #444;
+    color:#fff;
+    padding:8px 12px;
+    border-radius:6px;
+    font-size:1.1rem;
+    text-align:center;
+    width:180px;
+    transition:all .3s;
+  }
+  input:focus{outline:none;border-color:#999}
+  button{
+    margin-left:8px;
+    padding:8px 16px;
+    font-size:1.05rem;
+    background:#111;
+    border:1px solid #555;
+    color:#ddd;
+    border-radius:6px;
+    cursor:pointer;
+    transition:all .3s;
+  }
+  button:hover{background:#222;color:#fff}
+  #mensagem{margin-top:20px;font-size:1rem;color:#aaa;min-height:22px}
 </style>
 </head>
 <body>
-  <h1>Qual a cor do céu?</h1>
-  <input id="resposta" placeholder="..." autocomplete="off">
-  <div id="voz">[voz distante] Precisa de dica?</div>
 
-  <audio id="musica" loop>
-    <source src="misterio.mp3" type="audio/mpeg">
-  </audio>
-  <audio id="acerto">
-    <source src="acerto.mp3" type="audio/mpeg">
-  </audio>
+  <h1>Você entra na caverna e ela se fecha logo atrás de você.<br>
+  Então, uma pergunta surge na parede à sua frente...</h1>
 
-<script>
-  const musica = document.getElementById('musica');
-  const acerto = document.getElementById('acerto');
-  const voz = document.getElementById('voz');
-  let tentativas = 0;
-  const correta = 'azul';
-  const input = document.getElementById('resposta');
+  <div class="pergunta">“Qual a cor do céu?”</div>
 
-  // tenta tocar a música imediatamente (pode falhar)
-  musica.play().catch(()=>{/* será iniciado na 1ª interação */});
+  <div>
+    <input type="text" id="resposta" placeholder="sua resposta">
+    <button onclick="verificar()">Enviar</button>
+  </div>
 
-  // garante que se o navegador bloqueou autoplay, qualquer interação a libera
-  function garantirAudioUserGesture() {
-    musica.play().catch(()=>{});
-    document.removeEventListener('click', garantirAudioUserGesture);
-    document.removeEventListener('keydown', garantirAudioUserGesture);
-  }
-  document.addEventListener('click', garantirAudioUserGesture);
-  document.addEventListener('keydown', garantirAudioUserGesture);
+  <div id="mensagem"></div>
 
-  input.addEventListener('keyup', (e)=>{
-    if(e.key !== 'Enter') return;
-    const val = input.value.trim().toLowerCase();
-    if(val === correta){
-      try{ acerto.play(); }catch(e){}
-      document.body.style.transition = 'opacity 1.4s ease';
-      document.body.style.opacity = 0;
-      setTimeout(()=> location.href = 'fase2.html', 1400);
-    } else {
-      tentativas++;
-      input.value = '';
-      if(tentativas >= 3) voz.style.opacity = 1;
+  <script>
+    let tentativas = 0;
+
+    function verificar() {
+      const resp = document.getElementById("resposta").value.trim().toLowerCase();
+      const msg = document.getElementById("mensagem");
+
+      if (resp === "azul") {
+        msg.style.color = "#0f0";
+        msg.textContent = "A parede se move, revelando uma passagem...";
+        setTimeout(()=>{ location.href = "fase2.html"; },1800);
+      } else {
+        tentativas++;
+        msg.style.color = "#f55";
+        msg.textContent = "Nada acontece.";
+        if (tentativas === 3) {
+          msg.style.color = "#999";
+          msg.textContent = "Uma voz misteriosa sussurra: “Precisa de dica?”";
+        }
+      }
     }
-  });
-</script>
+  </script>
 </body>
 </html>
