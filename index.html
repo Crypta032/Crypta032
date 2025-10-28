@@ -5,72 +5,80 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Crypta 032</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
-      background-size: cover;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-      position: relative;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    body::before {
-      content: "";
+    body {
+      background: url('floresta.jpg') center center / cover no-repeat fixed;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      cursor: pointer;
+      font-family: 'Cinzel', serif;
+    }
+
+    .overlay {
       position: absolute;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.75);
+      background: rgba(0, 0, 0, 0.6);
+      top: 0;
+      left: 0;
       z-index: 1;
     }
 
-    img {
-      width: 250px;
-      height: auto;
-      cursor: pointer;
+    .entrada {
+      position: relative;
       z-index: 2;
-      transition: 0.3s ease;
-      border-radius: 12px;
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+      text-align: center;
+      color: #ddd;
+      text-shadow: 0 0 15px #000;
     }
 
-    img:hover {
+    .entrada img {
+      width: 300px;
+      cursor: pointer;
+      filter: brightness(0.8);
+      transition: all 0.3s ease;
+    }
+
+    .entrada img:hover {
+      filter: brightness(1);
       transform: scale(1.05);
-      box-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
     }
 
     h1 {
-      position: absolute;
-      top: 40px;
-      color: #c0c0c0;
-      font-family: 'Courier New', monospace;
-      letter-spacing: 2px;
-      text-shadow: 0 0 15px #000;
-      z-index: 2;
+      font-size: 2.5em;
+      letter-spacing: 3px;
+      margin-bottom: 20px;
+    }
+
+    audio {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <h1>Crypta 032</h1>
-  <img src="assets.png" alt="Entrada da caverna" onclick="entrar()">
+  <div class="overlay"></div>
+  <div class="entrada">
+    <h1>Crypta 032</h1>
+    <img src="assets.png" alt="Entrada da Caverna" onclick="entrar()">
+  </div>
+
+  <audio autoplay loop>
+    <source src="floresta.mp3" type="audio/mpeg">
+  </audio>
 
   <script>
     function entrar() {
-      const fade = document.createElement("div");
-      fade.style.position = "fixed";
-      fade.style.top = 0;
-      fade.style.left = 0;
-      fade.style.width = "100%";
-      fade.style.height = "100%";
-      fade.style.backgroundColor = "black";
-      fade.style.opacity = 0;
-      fade.style.transition = "opacity 1.5s ease";
-      document.body.appendChild(fade);
-      setTimeout(() => fade.style.opacity = 1, 100);
-      setTimeout(() => { window.location.href = "fase1.html"; }, 1500);
+      document.body.style.transition = "opacity 2s ease";
+      document.body.style.opacity = 0;
+      setTimeout(() => window.location.href = 'fase1.html', 2000);
     }
   </script>
 </body>
