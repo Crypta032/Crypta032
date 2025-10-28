@@ -8,42 +8,44 @@
     body {
       margin: 0;
       padding: 0;
-      background-color: #000;
-      color: #c9c9c9;
-      font-family: "Cinzel", serif;
-      overflow: hidden;
+      height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      height: 100vh;
+      align-items: center;
       text-align: center;
+      font-family: "Cinzel", serif;
+      color: #c9c9c9;
+      background: url('floresta.jpg') no-repeat center center fixed;
+      background-size: cover;
+      overflow: hidden;
     }
 
     h1 {
       font-size: 1.4rem;
-      max-width: 80%;
+      max-width: 85%;
       line-height: 1.6;
+      text-shadow: 0 0 8px #000;
       opacity: 0;
-      animation: fadeIn 4s ease forwards;
+      animation: fadeIn 3s ease forwards;
     }
 
     .portal {
-      width: 250px;
+      width: 280px;
       max-width: 80%;
       border-radius: 8px;
-      box-shadow: 0 0 25px #1f1f1f;
-      margin-top: 30px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
+      margin-top: 35px;
       cursor: pointer;
       opacity: 0;
       transform: scale(0.95);
-      animation: aparecerPortal 5s ease forwards 2s;
+      animation: aparecerPortal 4s ease forwards 2s;
       transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
 
     .portal:hover {
       transform: scale(1.03);
-      box-shadow: 0 0 30px #2e2e2e;
+      box-shadow: 0 0 35px rgba(0, 0, 0, 0.9);
     }
 
     @keyframes fadeIn {
@@ -56,17 +58,17 @@
       to { opacity: 1; transform: scale(1); }
     }
 
-    .brilho-floresta {
+    .filtro {
       position: fixed;
       inset: 0;
       pointer-events: none;
-      background: radial-gradient(circle at 50% 60%, rgba(0,255,60,0.04), rgba(0,0,0,0.95) 70%);
+      background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.5), rgba(0,0,0,0.85) 80%);
       animation: pulsar 6s infinite alternate;
     }
 
     @keyframes pulsar {
-      0% { opacity: 0.6; }
-      100% { opacity: 0.9; }
+      0% { opacity: 0.9; }
+      100% { opacity: 0.6; }
     }
   </style>
 </head>
@@ -74,8 +76,7 @@
   <h1>Você, após horas caminhando perdido nessa floresta,<br>finalmente encontra algo.<br><br>Uma caverna com o nome gravado na pedra: <strong>CRYPTA 032</strong>.<br><br>Será uma boa ideia entrar?</h1>
   
   <img src="assets.png" alt="Entrada da caverna" class="portal" onclick="entrar()">
-
-  <div class="brilho-floresta"></div>
+  <div class="filtro"></div>
 
   <audio id="ambiente" loop>
     <source src="misterio.mp3" type="audio/mpeg">
