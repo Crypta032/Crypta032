@@ -1,115 +1,115 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Crypta 032 — Fase 2</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: black;
-      color: #e0e0e0;
-      font-family: "Cinzel", serif;
-      text-align: center;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    h1 {
-      font-size: 1.2rem;
-      max-width: 80%;
-      line-height: 1.5rem;
-      opacity: 0.85;
-      margin-bottom: 40px;
-    }
-
-    .question {
-      font-size: 1.4rem;
-      margin-bottom: 20px;
-      letter-spacing: 1px;
-    }
-
-    input {
-      background: none;
-      border: none;
-      border-bottom: 1px solid #666;
-      color: #e0e0e0;
-      font-size: 1.2rem;
-      outline: none;
-      text-align: center;
-      width: 220px;
-      transition: border-color 0.3s;
-    }
-
-    input:focus {
-      border-color: #aaa;
-    }
-
-    .message {
-      margin-top: 20px;
-      font-size: 1rem;
-      opacity: 0.8;
-    }
-
-    .misterious {
-      color: #888;
-      font-style: italic;
-      margin-top: 25px;
-      font-size: 0.95rem;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .fade {
-      animation: fadeIn 1.2s ease forwards;
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Crypta 032 – Fase 2</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{
+    height:100%;
+    background:#000;
+    color:#e6e6e6;
+    font-family:"Cinzel",serif;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    overflow:hidden;
+    padding:40px;
+  }
+  h1{
+    font-size:1.2rem;
+    margin-bottom:40px;
+    line-height:1.6;
+    color:#ccc;
+    max-width:800px;
+  }
+  .pergunta{
+    font-size:1.6rem;
+    margin-bottom:30px;
+    color:#f1f1f1;
+  }
+  #resposta{
+    background:none;
+    border:none;
+    border-bottom:2px solid #555;
+    color:#fff;
+    font-size:1.2rem;
+    text-align:center;
+    width:220px;
+    transition:all .3s;
+  }
+  #resposta:focus{
+    outline:none;
+    border-color:#aaa;
+  }
+  #mensagem{
+    margin-top:25px;
+    font-size:1rem;
+    color:#aaa;
+    min-height:22px;
+  }
+  audio{display:none;}
+</style>
 </head>
 <body>
-  <h1 class="fade">E você começa a perceber... não há portas à sua volta, nem saídas nessa caverna.<br>Apenas uma pergunta na parede.</h1>
 
-  <div class="question fade">"Qual o animal que tem irmãos construtores?"</div>
+  <h1>E você começa a perceber, que não há portas à sua volta, e nem saídas nessa caverna...<br>
+  Apenas uma pergunta na parede.</h1>
 
-  <input type="text" id="answer" placeholder="Digite sua resposta..." autocomplete="off">
-  <div class="message" id="message"></div>
-  <div class="misterious" id="hint"></div>
+  <div class="pergunta">“O que é, o que é... que quanto mais se tira, maior fica?”</div>
+
+  <input type="text" id="resposta" autocomplete="off" placeholder="" />
+
+  <div id="mensagem"></div>
+
+  <!-- Sons -->
+  <audio id="musica" autoplay loop>
+    <source src="misterio.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="acerto">
+    <source src="acerto.mp3" type="audio/mpeg">
+  </audio>
 
   <script>
-    const answerInput = document.getElementById("answer");
-    const message = document.getElementById("message");
-    const hint = document.getElementById("hint");
+    const input = document.getElementById("resposta");
+    const msg = document.getElementById("mensagem");
+    const musica = document.getElementById("musica");
+    const somAcerto = document.getElementById("acerto");
+    let tentativas = 0;
 
-    const correctAnswer = "porco";
-    const hintText = ":/";
-    let attempts = 0;
+    // Tocar música ambiente automaticamente
+    musica.volume = 0.4;
+    musica.play().catch(() => {
+      document.body.addEventListener("click", () => musica.play(), { once: true });
+    });
 
-    answerInput.addEventListener("keypress", function(event) {
-      if (event.key === "Enter") {
-        const userAnswer = answerInput.value.trim().toLowerCase();
-        attempts++;
+    input.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") verificar();
+    });
 
-        if (userAnswer === correctAnswer) {
-          message.textContent = "Você ouve algo se mover... uma passagem se abre lentamente.";
-          message.style.color = "#00c853";
-          setTimeout(() => {
-            window.location.href = "fase3.html";
-          }, 2500);
-        } else {
-          message.textContent = "Nada acontece.";
-          message.style.color = "#d32f2f";
-          if (attempts === 3) {
-            hint.textContent = "Uma voz sussurra: \"" + hintText + "\"";
-          }
+    function verificar() {
+      const resp = input.value.trim().toLowerCase();
+
+      if (resp === "buraco") {
+        somAcerto.play();
+        msg.style.color = "#0f0";
+        msg.textContent = "As pedras à frente se movem lentamente...";
+        setTimeout(() => { window.location.href = "fase3.html"; }, 1800);
+      } else {
+        tentativas++;
+        msg.style.color = "#f55";
+        msg.textContent = "Nada acontece.";
+        if (tentativas === 3) {
+          msg.style.color = "#999";
+          msg.textContent = "Uma voz distante murmura: “Pense no vazio...”";
         }
       }
-    });
+      input.value = "";
+    }
   </script>
 </body>
 </html>
