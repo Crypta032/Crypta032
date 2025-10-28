@@ -1,88 +1,101 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Crypta 032</title>
   <style>
-    html, body {
-      height: 100%;
+    body {
       margin: 0;
       padding: 0;
-      background-color: black;
-      overflow: hidden;
-    }
-
-    body {
-      background-image: url("floresta.jpg");
-      background-size: cover;
-      background-position: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      color: #ccc;
+      background-color: #000;
+      color: #c9c9c9;
       font-family: "Cinzel", serif;
-      text-shadow: 0 0 8px #000;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
     }
 
     h1 {
-      font-size: 2.5rem;
-      color: #ddd;
-      text-shadow: 0 0 15px #000;
-      margin-bottom: 30px;
+      font-size: 1.4rem;
+      max-width: 80%;
+      line-height: 1.6;
+      opacity: 0;
+      animation: fadeIn 4s ease forwards;
     }
 
     .portal {
-      width: 300px;
-      height: auto;
+      width: 250px;
+      max-width: 80%;
+      border-radius: 8px;
+      box-shadow: 0 0 25px #1f1f1f;
+      margin-top: 30px;
       cursor: pointer;
-      transition: transform 0.3s ease, filter 0.3s ease;
-      filter: brightness(0.7);
+      opacity: 0;
+      transform: scale(0.95);
+      animation: aparecerPortal 5s ease forwards 2s;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
 
     .portal:hover {
-      transform: scale(1.05);
-      filter: brightness(1);
+      transform: scale(1.03);
+      box-shadow: 0 0 30px #2e2e2e;
     }
 
-    .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    audio {
-      display: none;
+    @keyframes aparecerPortal {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .brilho-floresta {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 60%, rgba(0,255,60,0.04), rgba(0,0,0,0.95) 70%);
+      animation: pulsar 6s infinite alternate;
+    }
+
+    @keyframes pulsar {
+      0% { opacity: 0.6; }
+      100% { opacity: 0.9; }
     }
   </style>
 </head>
 <body>
-  <div class="overlay"></div>
-  <h1>Crypta 032</h1>
-  <img src="assets.png" alt="Entrada da caverna" class="portal" id="portal">
+  <h1>Você, após horas caminhando perdido nessa floresta,<br>finalmente encontra algo.<br><br>Uma caverna com o nome gravado na pedra: <strong>CRYPTA 032</strong>.<br><br>Será uma boa ideia entrar?</h1>
+  
+  <img src="assets.png" alt="Entrada da caverna" class="portal" onclick="entrar()">
 
-  <!-- Música ambiente -->
-  <audio id="musica" autoplay loop>
+  <div class="brilho-floresta"></div>
+
+  <audio id="ambiente" loop>
     <source src="misterio.mp3" type="audio/mpeg">
   </audio>
 
   <script>
-    // Clique para entrar
-    document.getElementById("portal").addEventListener("click", function() {
-      window.location.href = "fase1.html";
-    });
-
-    // Tocar música assim que possível
-    const musica = document.getElementById("musica");
+    const musica = document.getElementById("ambiente");
     musica.volume = 0.4;
     musica.play().catch(() => {
-      // se o navegador bloquear autoplay
       document.body.addEventListener("click", () => musica.play(), { once: true });
     });
+
+    function entrar() {
+      const som = new Audio("passo.mp3");
+      som.volume = 0.6;
+      som.play();
+      setTimeout(() => {
+        window.location.href = "fase1.html";
+      }, 2000);
+    }
   </script>
 </body>
 </html>
