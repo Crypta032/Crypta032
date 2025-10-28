@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Crypta 032 — Fase 1</title>
+  <title>Fase 1 - Crypta 032</title>
   <style>
     * {
       margin: 0;
@@ -12,85 +12,121 @@
     }
 
     body {
-      background-color: #050505;
-      color: #e0e0e0;
+      background: radial-gradient(circle at center, #0a0a0a 0%, #000 100%);
+      color: #fff;
       font-family: 'Courier New', monospace;
-      min-height: 100vh;
+      height: 100vh;
       display: flex;
       flex-direction: column;
+      justify-content: center;
       align-items: center;
-      padding: 30px;
+      text-align: center;
+      overflow: hidden;
     }
 
-    h2 {
-      font-size: 2em;
-      text-shadow: 0 0 10px #7f00ff, 0 0 15px #00fff2;
+    h1 {
+      font-size: 2.3em;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px #7f00ff, 0 0 20px #00fff2;
       margin-bottom: 20px;
     }
 
-    .resposta {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 40px;
+    p {
+      font-size: 1.2em;
+      margin-bottom: 25px;
     }
 
     input {
       padding: 10px;
-      font-size: 1em;
-      border: none;
-      outline: none;
-      border-radius: 8px;
       width: 220px;
+      border: none;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 1em;
+      outline: none;
       background-color: #111;
       color: #fff;
-      box-shadow: 0 0 10px rgba(0,0,0,0.6);
+      border: 1px solid #444;
+      transition: 0.3s;
+    }
+
+    input:focus {
+      border-color: #00fff2;
+      box-shadow: 0 0 10px #00fff2;
     }
 
     button {
-      padding: 10px 18px;
-      background-color: #7f00ff;
-      color: white;
+      margin-top: 15px;
+      padding: 10px 20px;
       border: none;
       border-radius: 8px;
+      background-color: #7f00ff;
+      color: white;
       cursor: pointer;
+      font-size: 1em;
       transition: 0.3s;
-      font-weight: bold;
     }
 
     button:hover {
-      background-color: #5600a3;
+      background-color: #9a33ff;
+      transform: scale(1.05);
     }
 
-    .enigma {
-      text-align: center;
-      max-width: 700px;
+    .mensagem {
       margin-top: 20px;
       font-size: 1.1em;
-      line-height: 1.6em;
+      color: #ccc;
+    }
+
+    .fade {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: black;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+      pointer-events: none;
+      z-index: 10;
     }
   </style>
 </head>
 <body>
-  <h2>Fase 1</h2>
-
-  <div class="resposta">
-    <input type="text" id="resposta" placeholder="Digite sua resposta..." />
-    <button onclick="verificarResposta()">Enviar</button>
-  </div>
-
-  <div class="enigma" id="enigma">
-    <p>Aqui você pode colocar o texto, imagem ou código da sua primeira fase.<br>
-    Exemplo: “Apenas quem vê no escuro encontrará o caminho...”</p>
-  </div>
+  <h1>Fase 1</h1>
+  <p>Qual a cor do céu?</p>
+  <input type="text" id="resposta" placeholder="Digite sua resposta..." autocomplete="off">
+  <button onclick="verificar()">Enviar</button>
+  <div class="mensagem" id="mensagem"></div>
+  <div class="fade" id="fade"></div>
 
   <script>
-    function verificarResposta() {
-      const resposta = document.getElementById('resposta').value.trim().toLowerCase();
-      
-      if (resposta === "chave") { // troque "chave" pela resposta correta
-        window.location.href = "fase2.html"; // próxima fase
+    let tentativas = 0;
+    const mensagem = document.getElementById("mensagem");
+    const fade = document.getElementById("fade");
+
+    function verificar() {
+      const resposta = document.getElementById("resposta").value.trim().toLowerCase();
+      tentativas++;
+
+      if (resposta === "azul") {
+        mensagem.textContent = "✔️ Correto! Avançando...";
+        mensagem.style.color = "#00ffae";
+        fade.style.opacity = 1;
+        setTimeout(() => {
+          window.location.href = "fase2.html"; // aqui entra o nome da próxima fase
+        }, 1500);
       } else {
-        alert("Resposta incorreta... tente novamente.");
+        if (tentativas < 3) {
+          mensagem.textContent = "❌ Resposta incorreta. Tente novamente.";
+          mensagem.style.color = "#ff4d4d";
+        } else if (tentativas === 3) {
+          mensagem.textContent = "💡 Dica: Precisa de dica?";
+          mensagem.style.color = "#ffd700";
+        } else {
+          mensagem.textContent = "❌ Ainda não... pense na cor do céu durante o dia.";
+          mensagem.style.color = "#ff4d4d";
+        }
       }
     }
   </script>
