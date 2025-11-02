@@ -64,8 +64,7 @@
 </head>
 <body>
 
-  <h1>“Essa caverna é meio úmida”, você pensa sem ter o que fazer sobre... além de continuar.  
-  As gotas ecoam no chão enquanto algo se revela na parede à frente.</h1>
+  <h1> Novamente algo se revela na parede à frente, uma frase diz: </h1>
 
   <div class="enigma">±b...</div>
   <div class="pergunta">“De quem é isso?”</div>
@@ -107,12 +106,12 @@
 
       if (resp === "bhaskara akaria") {
         msg.style.color = "#0f0";
-        msg.textContent = "As gotas cessam... e um som metálico ecoa ao longe.";
+        msg.textContent = "um som metálico ecoa ao longe.";
         acerto.play();
         setTimeout(() => { window.location.href = "f6-zip.html"; }, 1800);
       } else if (tentativas >= 3) {
         msg.style.color = "#999";
-        msg.textContent = "[voz distante]... Quem é o criador?";
+        msg.textContent = "[voz distante]... Akaria?";
       } else {
         msg.style.color = "#f55";
         msg.textContent = "Nada acontece.";
