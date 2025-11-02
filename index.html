@@ -32,7 +32,7 @@
   }
 
   .entrada {
-    width:360px;         /* um pouco maior como você pediu antes */
+    width:360px;         
     max-width:78%;
     cursor:pointer;
     transition:transform .35s ease, filter .35s ease;
@@ -51,26 +51,26 @@
 
   <div class="texto" id="texto">
     Você, após horas caminhando perdido nessa floresta, finalmente encontra algo — 
-    uma caverna com a inscrição <strong>CRYPTA 032</strong>.<br><br>
+    uma caverna escrito: <strong>CRYPTA 032</strong>.<br><br>
     Será uma boa ideia entrar?
   </div>
 
-  <!-- USANDO O NOME QUE VOCÊ JÁ TEM: assets.png -->
+  
   <img src="assets.png" alt="Entrada da Caverna" class="entrada" id="entrada">
 
   <div class="hint">(clique na entrada para continuar)</div>
 
-  <!-- USANDO O NOME QUE VOCÊ JÁ TEM: misterio.mp3 -->
+  
   <audio id="misterio" loop>
     <source src="misterio.mp3" type="audio/mpeg">
   </audio>
 
   <script>
-    // usa nomes que você tem: assets.png e misterio.mp3 e passo.mp3
+   
     const audio = document.getElementById('misterio');
     audio.volume = 0;
 
-    // tenta tocar em autoplay e faz fade-in; se bloqueado, desbloqueia no primeiro click/keydown
+   
     audio.play().then(() => {
       let v = 0;
       const t = setInterval(() => {
@@ -88,14 +88,14 @@
       document.addEventListener('keydown', unlock, { once:true });
     });
 
-    // clique na entrada: toca passo (passo.mp3) e faz a transição
+    
     const entrada = document.getElementById('entrada');
     entrada.addEventListener('click', () => {
-      // toca som de passo (se existir)
+      
       const s = new Audio('passo.mp3');
       s.volume = 0.7;
       s.play().catch(()=>{});
-      // anima e navega
+      
       document.body.classList.add('fade-out');
       setTimeout(() => { location.href = 'f1-djo.html'; }, 1100);
     });
