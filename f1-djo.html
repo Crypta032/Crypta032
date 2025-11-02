@@ -65,7 +65,7 @@
 
   <div id="mensagem"></div>
 
-  <!-- Sons -->
+  
   <audio id="musica" autoplay loop>
     <source src="misterio.mp3" type="audio/mpeg">
   </audio>
@@ -81,10 +81,10 @@
     const somAcerto = document.getElementById("acerto");
     let tentativas = 0;
 
-    // Tocar música ambiente automaticamente
+    
     musica.volume = 0.4;
     musica.play().catch(() => {
-      // Caso o navegador bloqueie autoplay
+      
       document.body.addEventListener("click", () => musica.play(), { once: true });
     });
 
@@ -106,7 +106,7 @@
         msg.textContent = "Nada acontece.";
         if (tentativas === 3) {
           msg.style.color = "#999";
-          msg.textContent = "Uma voz misteriosa sussurra: “Precisa de dica?”";
+          msg.textContent = "Voce ouve algo sussurrar: “Precisa de dica?”";
         }
       }
       input.value = "";
