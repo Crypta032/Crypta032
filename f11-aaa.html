@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Crypta 032 – Fase 11</title>
+<style>
+  * {margin:0; padding:0; box-sizing:border-box;}
+  html,body {
+    height:100%;
+    background:#000;
+    color:#e6e6e6;
+    font-family:"Cinzel",serif;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    overflow:hidden;
+    padding:40px;
+  }
+  h1 {
+    font-size:1.1rem;
+    margin-bottom:40px;
+    line-height:1.6;
+    color:#ccc;
+    max-width:800px;
+  }
+  .codigo {
+    font-size:2rem;
+    color:#d3d3d3;
+    letter-spacing:2px;
+    margin-top:20px;
+    margin-bottom:40px;
+  }
+  img {
+    display:block;
+    width:520px;
+    max-width:95%;
+    height:auto;
+    border-radius:0;
+    box-shadow:none;
+    margin-bottom:30px;
+  }
+  #resposta {
+    background:none;
+    border:none;
+    border-bottom:2px solid #555;
+    color:#fff;
+    font-size:1.2rem;
+    text-align:center;
+    width:220px;
+    margin-top:20px;
+    transition:all .3s;
+  }
+  #resposta:focus {
+    outline:none;
+    border-color:#aaa;
+  }
+  #mensagem {
+    margin-top:25px;
+    font-size:1rem;
+    color:#aaa;
+    min-height:22px;
+  }
+</style>
+</head>
+<body>
+
+  <h1>Você sente o ar pesar. Um novo símbolo toma forma à sua frente, acompanhado de um eco distante...</h1>
+
+  <img src="china.png" alt="imagem misteriosa">
+
+  <div class="codigo">z lclysl yprcl</div>
+
+  <input type="text" id="resposta" autocomplete="off" placeholder="" />
+  <div id="mensagem"></div>
+
+  <!-- Sons -->
+  <audio id="musica" autoplay loop>
+    <source src="misterio.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="acerto">
+    <source src="acerto.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const input = document.getElementById("resposta");
+    const msg = document.getElementById("mensagem");
+    const musica = document.getElementById("musica");
+    const acerto = document.getElementById("acerto");
+    let tentativas = 0;
+
+    // Música ambiente
+    musica.volume = 0.4;
+    musica.play().catch(() => {
+      document.body.addEventListener("click", () => musica.play(), { once: true });
+    });
+
+    // Enviar com Enter
+    input.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") verificar();
+    });
+
+    function verificar() {
+      const resp = input.value.trim().toLowerCase();
+      tentativas++;
+
+      if (resp === "lev yashin") {
+        msg.style.color = "#0f0";
+        msg.textContent = "O som de um apito distante ecoa... algo se abre à frente.";
+        acerto.play();
+        setTimeout(() => { window.location.href = "fase12.html"; }, 1800);
+      } else if (tentativas >= 3) {
+        msg.style.color = "#999";
+        msg.textContent = "[voz distante]... imperador romano.";
+      } else {
+        msg.style.color = "#f55";
+        msg.textContent = "Nada acontece.";
+      }
+
+      input.value = "";
+    }
+  </script>
+</body>
+</html>
