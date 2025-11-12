@@ -35,8 +35,8 @@
   }
   img {
     display:block;
-    width:520px;
-    max-width:95%;
+    width:460px; /* um pouco menor */
+    max-width:90%;
     height:auto;
     border-radius:0;
     box-shadow:none;
@@ -57,6 +57,12 @@
     outline:none;
     border-color:#aaa;
   }
+  #linha {
+    width:220px;
+    height:2px;
+    background:#555;
+    margin-top:-4px;
+  }
   #mensagem {
     margin-top:25px;
     font-size:1rem;
@@ -74,6 +80,7 @@
   <div class="codigo">z lclysl yprcl</div>
 
   <input type="text" id="resposta" autocomplete="off" placeholder="" />
+  <div id="linha"></div>
   <div id="mensagem"></div>
 
   <!-- Sons -->
