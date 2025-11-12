@@ -16,61 +16,78 @@
     align-items:center;
     justify-content:center;
     text-align:center;
-    overflow:hidden;
+    overflow:auto;
     padding:40px;
   }
+
+  
   img {
-    width:280px;
-    max-width:80%;
-    border-radius:12px;
-    box-shadow:0 0 25px rgba(255,255,255,0.1);
+    display:block;
+    width:420px;            
+    max-width:90%;
+    height:auto;
+    border-radius:0;        
+    box-shadow:none;        
     margin-bottom:30px;
+    image-rendering:auto;   
   }
+
   h1 {
     font-size:1.2rem;
-    margin-bottom:40px;
+    margin-bottom:24px;
     line-height:1.6;
     color:#ccc;
   }
   .enigma {
-    font-size:2.6rem;
+    font-size:1.4rem;      
     color:#d3d3d3;
-    letter-spacing:3px;
-    text-shadow:0 0 15px #111, 0 0 25px #000;
-    margin-bottom:30px;
-    max-width:800px;
+    letter-spacing:1px;
+    text-shadow:0 0 8px #000;
+    margin-bottom:20px;
+    max-width:900px;
   }
+
   #resposta {
     background:none;
     border:none;
     border-bottom:2px solid #555;
     color:#fff;
-    font-size:1.2rem;
+    font-size:1.1rem;
     text-align:center;
-    width:220px;
-    margin-top:40px;
+    width:260px;
+    margin-top:28px;
     transition:all .3s;
   }
   #resposta:focus {
     outline:none;
     border-color:#aaa;
   }
+
+  
   .extra {
-    margin-top:20px;
-    font-size:0.9rem;
-    color:#666;
+    margin-top:18px;
+    font-size:0.95rem;
+    color:#7f7f7f;   
     font-style:italic;
   }
+
   #mensagem {
     margin-top:10px;
     font-size:1rem;
     color:#aaa;
     min-height:22px;
   }
+
+  @media (max-width:520px) {
+    img { width:320px; }
+    .enigma { font-size:1.15rem; }
+    #resposta { width:200px; }
+  }
 </style>
 </head>
 <body>
 
+  
   <img src="minecraft.png" alt="Imagem misteriosa">
 
   <h1>CATEGORIA.</h1>
@@ -81,7 +98,7 @@
 
   <input type="text" id="resposta" autocomplete="off" placeholder="" />
 
-  <!-- texto claro acima da dica -->
+  
   <div class="extra">dica extra: use descrições avançadas. (f3+h)</div>
 
   <div id="mensagem"></div>
@@ -117,13 +134,12 @@
         msg.style.color = "#0f0";
         msg.textContent = "O nome ecoa no espaço... e a luz retorna brevemente.";
         acerto.play();
+        localStorage.setItem("faseLiberada", 10); 
         setTimeout(() => { window.location.href = "proxima.html"; }, 1800);
-      } 
-      else if (tentativas >= 3) {
+      } else if (tentativas >= 3) {
         msg.style.color = "#999";
         msg.textContent = "[voz distante]... no espaço.";
-      } 
-      else {
+      } else {
         msg.style.color = "#f55";
         msg.textContent = "Nada acontece.";
       }
@@ -131,6 +147,5 @@
       input.value = "";
     }
   </script>
-
 </body>
 </html>
